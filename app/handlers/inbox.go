@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"OmarFaruk-0x01/sms-trap/app/services"
-	"OmarFaruk-0x01/sms-trap/views"
+	"OmarFaruk-0x01/sms-trap/app/views"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,10 +12,6 @@ import (
 type InboxHandler struct {
 	db             *bun.DB
 	smsTrapService *services.SmsTrapService
-}
-
-type ShowInboxParam struct {
-	phone string `param:"phone"`
 }
 
 func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
@@ -28,7 +24,12 @@ func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
 
 		activePhone := c.Param("phone")
 
-		return views.Render(views.Home(traps, activePhone), http.StatusOK, c)
+		selectedTraps, err := inbox.smsTrapService.FindAllByPhone(activePhone)
+		if err != nil {
+			return c.String(404, "Not Found")
+		}
+
+		return views.Render(views.Home(traps, selectedTraps, activePhone), http.StatusOK, c)
 	}
 }
 

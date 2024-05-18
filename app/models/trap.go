@@ -13,6 +13,7 @@ type Trap struct {
 	Phone   string `bun:"phone,notnull,nullzero,"`
 	Message string `bun:"message,notnull,nullzero"`
 	Type    string `bun:"type"`
+	Label   string `bun:"label"`
 
 	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
 	UpdatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`

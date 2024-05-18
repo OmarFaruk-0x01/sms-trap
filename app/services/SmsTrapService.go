@@ -45,6 +45,20 @@ func (sts *SmsTrapService) Find(trapId int64) (*models.Trap, error) {
 	_, err := sts.db.NewSelect().
 		Model(trap).
 		Where("id = ?", trapId).
+		Limit(1).
+		Exec(context.Background())
+
+	return trap, err
+}
+
+func (sts *SmsTrapService) FindByPhone(phone string) (*models.Trap, error) {
+
+	trap := &models.Trap{}
+
+	_, err := sts.db.NewSelect().
+		Model(trap).
+		Where("phone = ?", phone).
+		Limit(1).
 		Exec(context.Background())
 
 	return trap, err
@@ -56,6 +70,19 @@ func (sts *SmsTrapService) FindAll() ([]*models.Trap, error) {
 
 	err := sts.db.NewSelect().
 		Model(&traps).
+		Scan(context.Background())
+
+	return traps, err
+}
+
+func (sts *SmsTrapService) FindAllByPhone(phone string) ([]*models.Trap, error) {
+
+	traps := make([]*models.Trap, 0)
+
+	err := sts.db.NewSelect().
+		Model(&traps).
+		Where("phone = ?", phone).
+		Order("created_at DESC").
 		Scan(context.Background())
 
 	return traps, err

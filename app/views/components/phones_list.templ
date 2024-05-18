@@ -1,0 +1,53 @@
+package components
+
+import (
+	"OmarFaruk-0x01/sms-trap/app/models"
+	"OmarFaruk-0x01/sms-trap/app/utils"
+	"time"
+)
+
+
+
+script Filter(text string) {
+	alert(text)
+}
+
+templ PhonesList(phones []*models.TrapPhones, activePhone string) {
+	<label class="px-3">
+		<input
+			id="search-input"
+			class="rounded-lg p-4 bg-gray-100 transition duration-200 focus:outline-none focus:ring-2 w-full"
+			placeholder="Search..."
+		/>
+	</label>
+	<ul class="mt-6" id="phone-list">
+		for _, phone := range phones {
+			<li
+				data-key={ phone.Phone }
+				class={ "py-5 border-b px-3 transition ", templ.KV(" bg-indigo-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-indigo-100 ", activePhone != phone.Phone) }
+			>
+				<a href={ templ.SafeURL(phone.Phone) } class="flex justify-between items-center">
+					<h3 class="text-lg font-semibold">{ phone.Phone }</h3>
+					<p class="text-md text-gray-400">{ utils.FormatDuration(time.Since(phone.LastSmsAt)) }</p>
+				</a>
+			</li>
+		}
+	</ul>
+	<script type="text/javascript">
+
+		const searchInput = document.getElementById("search-input");
+
+		searchInput.addEventListener("input", (e) => {
+			const value = e.target.value;
+
+			const phoneList = document.getElementById("phone-list");
+			const phoneItems = phoneList.querySelectorAll("li");
+			phoneItems.forEach((item) => {
+				const shouldShow = item.dataset.key.includes(value);
+				item.style.display = shouldShow ? "block" : "none";
+			})
+
+		})
+
+	</script>
+}

@@ -15,9 +15,9 @@ type SmsTrapHandler struct {
 }
 
 type TrapQuery struct {
-	Phones  []string `query:"phone[]" validate:"required"`
+	Phones  []string `query:"phones[]" validate:"required,min=1,dive,numeric"`
 	Message string   `query:"message" validate:"required"`
-	Type    string   `query:"type" validate:"required"`
+	Type    string   `query:"type" validate:"required,oneof=text unicode"`
 }
 
 func (sms *SmsTrapHandler) Trap() echo.HandlerFunc {

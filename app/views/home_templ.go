@@ -12,11 +12,11 @@ import "bytes"
 
 import (
 	"OmarFaruk-0x01/sms-trap/app/models"
-	"OmarFaruk-0x01/sms-trap/views/components"
-	"OmarFaruk-0x01/sms-trap/views/layouts"
+	"OmarFaruk-0x01/sms-trap/app/views/components"
+	"OmarFaruk-0x01/sms-trap/app/views/layouts"
 )
 
-func Home(phones []*models.TrapPhones, activePhone string) templ.Component {
+func Home(phones []*models.TrapPhones, selectedTraps []*models.Trap, activePhone string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -35,21 +35,41 @@ func Home(phones []*models.TrapPhones, activePhone string) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"flex w-full h-full sha:ow-lg rounded-3xl\"><section class=\"flex flex-col pt-3 w-4/12 bg-gray-50 h-full overflow-y-scroll\"><label class=\"px-3\"><input class=\"rounded-lg p-4 bg-gray-100 transition duration-200 focus:outline-none focus:ring-2 w-full\" placeholder=\"Search...\"></label>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"flex w-full h-full sha:ow-lg rounded-3xl\"><section class=\"flex flex-col pt-3 w-4/12 bg-gray-50 h-full overflow-y-scroll\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.NumberList(phones, activePhone).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.PhonesList(phones, activePhone).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section><section class=\"w-8/12 h-screen overflow-y-scroll px-4 flex flex-col bg-white rounded-r-3xl\"><div class=\"sticky top-0 bg-white flex flex-col justify-between items-start h-48 mb-3\"><div class=\"py-3 flex space-x-4 items-center\"><div class=\"flex flex-col\"><h3 class=\"font-semibold text-lg\">Akhil Gautam</h3></div></div><hr class=\"w-full\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section><section class=\"w-8/12 h-screen overflow-y-scroll px-4 flex flex-col bg-white rounded-r-3xl\"><div class=\"sticky top-0 bg-white flex flex-col justify-between items-start h-[48px] mb-3\"><div class=\"py-3 flex space-x-4 items-center\"><div class=\"flex flex-col\"><h3 class=\"font-semibold text-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.SmsList().Render(ctx, templ_7745c5c3_Buffer)
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(activePhone)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/home.templ`, Line: 19, Col: 53}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3></div></div><hr class=\"w-full\"></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if activePhone != "" {
+				templ_7745c5c3_Err = components.SmsList(selectedTraps).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				templ_7745c5c3_Err = components.BlankView("Please select a phone number to see sms").Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section></main>")
 			if templ_7745c5c3_Err != nil {

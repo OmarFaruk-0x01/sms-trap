@@ -32,7 +32,18 @@ func (cv *AppValidator) Validate(i interface{}) error {
 			}
 
 			for _, e := range parsedError {
-				out.Errors[strings.ToLower(e.Field())] = mapErrorMessageWithTag(e.Field(), e.Tag())
+				field := strings.ToLower(e.Field())
+				tag := e.Tag()
+
+				fieldParts := strings.Split(field, "[")
+				baseName := fieldParts[0]
+				indexPart := strings.Trim(strings.Join(fieldParts[1:], ""), "]")
+
+				if indexPart != "" {
+					field = baseName + "." + indexPart
+				}
+
+				out.Errors[field] = mapErrorMessageWithTag(field, tag)
 			}
 
 			return out
@@ -46,6 +57,12 @@ func mapErrorMessageWithTag(field string, tag string) string {
 	switch tag {
 	case "required":
 		return fmt.Sprintf("%s is required", field)
+	case "min":
+		return fmt.Sprintf("%s must be at least %s characters long", field, tag)
+	case "numeric":
+		return fmt.Sprintf("%s must be a number", field)
+	case "oneof":
+		return fmt.Sprintf("%s is not valid", field)
 	default:
 		return "Unknown error"
 	}

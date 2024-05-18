@@ -2,8 +2,8 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  bin = "./tmp/main"
-  cmd = "make generate && make build_css && go build -o ./tmp/main ."
+  bin = "./tmp/main serve"
+  cmd = "make build"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "node_modules"]
   exclude_file = []

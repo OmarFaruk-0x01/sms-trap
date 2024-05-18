@@ -2,38 +2,23 @@ package main
 
 import (
 	"OmarFaruk-0x01/sms-trap/app"
-	"OmarFaruk-0x01/sms-trap/app/models"
+	"OmarFaruk-0x01/sms-trap/app/database"
+	"OmarFaruk-0x01/sms-trap/app/database/migration"
 	"OmarFaruk-0x01/sms-trap/app/routes"
-	"context"
-	"database/sql"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
-
-	"github.com/uptrace/bun/dialect/mysqldialect"
-	"github.com/uptrace/bun/extra/bundebug"
 )
 
 func main() {
 
-	sqldb, err := sql.Open("mysql", "root:@/sms-trap")
-
-	if err != nil {
-		panic(err)
+	if len(os.Args) < 2 {
+		panic("Not enough arguments. commands: \n'migrate:up', \n'migrate:down', \n'migrate:reset', \n'serve'")
 	}
 
-	db := bun.NewDB(sqldb, mysqldialect.New())
-
-	db.AddQueryHook(bundebug.NewQueryHook(
-		bundebug.WithVerbose(true),
-		bundebug.FromEnv("BUNDEBUG"),
-	))
-
-	_, err = db.NewCreateTable().
-		Model((*models.Trap)(nil)).
-		IfNotExists().
-		Exec(context.Background())
+	db, err := database.NewDB()
 
 	if err != nil {
 		panic(err)
@@ -50,5 +35,42 @@ func main() {
 
 	app := app.NewApp(echo, db, routers)
 
-	app.StartServer()
+	runCommand(app, os.Args[1])
+}
+
+func runCommand(app *app.App, command string) {
+	switch command {
+
+	case "migrate:up":
+		runMigration(app.Db, "up")
+
+	case "migrate:down":
+		runMigration(app.Db, "down")
+
+	case "migrate:reset":
+		runMigration(app.Db, "down")
+		runMigration(app.Db, "up")
+
+	case "serve":
+		app.StartServer()
+
+	default:
+		panic("Not enough arguments. commands: \n'migrate:up', \n'migrate:down', \n'migrate:reset', \n'serve'")
+	}
+}
+
+func runMigration(db *bun.DB, command string) {
+
+	migration := migration.NewBunMigration(db)
+
+	if command == "up" {
+
+		migration.Up()
+
+	} else if command == "down" {
+
+		migration.Down()
+
+	}
+
 }

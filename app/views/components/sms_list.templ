@@ -1,0 +1,21 @@
+package components
+
+import "OmarFaruk-0x01/sms-trap/app/models"
+
+
+templ SmsList(traps []*models.Trap) {
+	<section class="h-full flex flex-col space-y-3">
+		for _, trap := range traps {
+			<div class="flex items-start gap-2.5">
+				<div class="flex flex-col w-full max-w-[520px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">
+					<div class="flex items-center space-x-2 rtl:space-x-reverse">
+						<span class="text-sm font-semibold text-gray-900">{ trap.Phone }</span>
+						<span class="text-sm font-normal text-gray-500 ">{ trap.CreatedAt.Format("02 Jan 2006 15:04") }</span>
+					</div>
+					<p class="text-sm font-normal py-2.5 text-gray-900">{ trap.Message }</p>
+					<span class="text-sm font-normal text-gray-500 ">{trap.Type}</span>
+				</div>
+			</div>
+		}
+	</section>
+}

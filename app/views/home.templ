@@ -1,0 +1,32 @@
+package views
+
+import (
+	"OmarFaruk-0x01/sms-trap/app/views/layouts"
+	"OmarFaruk-0x01/sms-trap/app/views/components"
+	"OmarFaruk-0x01/sms-trap/app/models"
+)
+
+templ Home(phones []*models.TrapPhones, selectedTraps []*models.Trap, activePhone string) {
+	@layouts.RootLayout() {
+		<main class="flex w-full h-full sha:ow-lg rounded-3xl">
+			<section class="flex flex-col pt-3 w-4/12 bg-gray-50 h-full overflow-y-scroll">
+				@components.PhonesList(phones, activePhone)
+			</section>
+			<section class="w-8/12 h-screen overflow-y-scroll px-4 flex flex-col bg-white rounded-r-3xl">
+				<div class="sticky top-0 bg-white flex flex-col justify-between items-start h-[48px] mb-3">
+					<div class="py-3 flex space-x-4 items-center">
+						<div class="flex flex-col">
+							<h3 class="font-semibold text-lg">{activePhone}</h3>
+						</div>
+					</div>
+					<hr class="w-full"/>
+				</div>
+				if activePhone != "" {
+					@components.SmsList(selectedTraps)
+				} else {
+					@components.BlankView("Please select a phone number to see sms")
+				}
+			</section>
+		</main>
+	}
+}

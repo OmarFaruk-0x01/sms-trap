@@ -9,30 +9,30 @@ import (
 )
 
 type App struct {
-	echo    *echo.Echo
-	db      *bun.DB
-	routers []routes.Router
+	Echo    *echo.Echo
+	Db      *bun.DB
+	Routers []routes.Router
 }
 
 func (app *App) StartServer() {
 
-	app.echo.Static("/static/*", "public")
+	app.Echo.Static("/static/*", "public")
 
 	app.registerMiddlewares()
 
 	app.registerRoutes()
 
-	app.echo.Logger.Fatal(app.echo.Start(":1323"))
+	app.Echo.Logger.Fatal(app.Echo.Start(":1323"))
 }
 
 func (app *App) registerMiddlewares() {
 
-	app.echo.Use(middleware.Logger())
+	app.Echo.Use(middleware.Logger())
 
 }
 
 func (app *App) registerRoutes() {
-	for _, route := range app.routers {
+	for _, route := range app.Routers {
 		route.Register()
 	}
 }

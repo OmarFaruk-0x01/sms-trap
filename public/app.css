@@ -570,12 +570,20 @@ video {
   margin-top: 1.5rem;
 }
 
+.block {
+  display: block;
+}
+
 .flex {
   display: flex;
 }
 
-.h-48 {
-  height: 12rem;
+.table {
+  display: table;
+}
+
+.h-\[48px\] {
+  height: 48px;
 }
 
 .h-full {
@@ -612,6 +620,10 @@ video {
 
 .items-center {
   align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 .justify-between {
@@ -701,6 +713,10 @@ video {
 
 .p-4 {
   padding: 1rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
 }
 
 .px-3 {

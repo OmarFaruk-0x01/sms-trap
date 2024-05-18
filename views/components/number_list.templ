@@ -1,0 +1,18 @@
+package components
+
+import "OmarFaruk-0x01/sms-trap/app/models"
+
+templ NumberList(phones []*models.TrapPhones, activePhone string) {
+	<ul class="mt-6">
+		for _, phone := range phones {
+			<li
+				class={ "py-5 border-b px-3 transition ", templ.KV(" bg-indigo-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-indigo-100 ", activePhone != phone.Phone) }
+			>
+				<a href={ templ.SafeURL(phone.Phone) } class="flex justify-between items-center">
+					<h3 class="text-lg font-semibold">{ phone.Phone }</h3>
+					<p class="text-md text-gray-400">23m ago</p>
+				</a>
+			</li>
+		}
+	</ul>
+}

@@ -13,6 +13,36 @@ script ReadyNotification() {
     }
 }
 
+script ReadyWebSocket() {
+
+    var loc = window.location;
+    var uri = 'ws:';
+
+    if (loc.protocol === 'https:') {
+      uri = 'wss:';
+    }
+    uri += '//' + loc.host;
+    uri +=  '/ws';
+
+    ws = new WebSocket(uri)
+
+    ws.onopen = function() {
+      console.log('Connected')
+    }
+
+    ws.onmessage = function(evt) {
+        data = JSON.parse(evt.data)
+        if (data.trigger_notification) {
+            new Notification(`New Sms Recived From ${data?.query?.phones?.join(', ')}`, {
+                body: data?.query?.message,
+                icon: "https://cdn-icons-png.flaticon.com/512/6711/6711888.png",
+                onclick: function() { window.parent.focus();
+                         notification.close(); }
+            })
+        }
+    }
+}
+
 templ RootLayout() {
 	<html lang="en">
 		<head>
@@ -133,9 +163,10 @@ templ RootLayout() {
                 }
 
             </style>
-
+			@ReadyNotification()
+			@ReadyWebSocket()
 		</head>
-		<body onload={ReadyNotification()} class="exo-2-regular">
+		<body class="exo-2-regular">
 			<header class="p-5 flex items-center justify-between">
 				<span class="exo-2-black-italic text-2xl">SMS Trap</span>
 			</header>

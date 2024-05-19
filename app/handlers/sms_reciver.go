@@ -3,6 +3,8 @@ package handlers
 import (
 	"OmarFaruk-0x01/sms-trap/app/models"
 	"OmarFaruk-0x01/sms-trap/app/services"
+	"OmarFaruk-0x01/sms-trap/app/websocket"
+	"encoding/json"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -11,13 +13,20 @@ import (
 
 type SmsTrapHandler struct {
 	db             *bun.DB
+	hub            *websocket.Hub
 	smsTrapService *services.SmsTrapService
 }
 
 type TrapQuery struct {
-	Phones  []string `query:"phones[]" validate:"required,min=1,dive,numeric"`
-	Message string   `query:"message" validate:"required"`
-	Type    string   `query:"type" validate:"required,oneof=text unicode"`
+	Phones  []string `json:"phones" query:"phones[]" validate:"required,min=1,dive,numeric"`
+	Message string   `json:"message" query:"message" validate:"required"`
+	Type    string   `json:"type" query:"type" validate:"required,oneof=text unicode"`
+}
+
+type TrapMessage struct {
+	Query               *TrapQuery `json:"query"`
+	Message             string     `json:"message"`
+	TriggerNotification bool       `json:"trigger_notification"`
 }
 
 func (sms *SmsTrapHandler) Trap() echo.HandlerFunc {
@@ -52,15 +61,30 @@ func (sms *SmsTrapHandler) Trap() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
 
-		return c.JSON(200, query)
+		message, err := json.Marshal(&TrapMessage{
+			Query:               &query,
+			Message:             "success",
+			TriggerNotification: true,
+		})
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+
+		sms.hub.Broadcast(websocket.NewMessage([]byte(message), nil))
+
+		return c.JSON(200, echo.Map{
+			"message": "success",
+		})
 	}
 }
 
-func NewSmsTrapHandler(db *bun.DB) *SmsTrapHandler {
+func NewSmsTrapHandler(db *bun.DB, hub *websocket.Hub) *SmsTrapHandler {
 	smsTrapService := services.NewSmsTrapService(db)
 
 	return &SmsTrapHandler{
 		db,
+		hub,
 		smsTrapService,
 	}
 }

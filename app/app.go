@@ -2,6 +2,7 @@ package app
 
 import (
 	"OmarFaruk-0x01/sms-trap/app/routes"
+	"OmarFaruk-0x01/sms-trap/app/websocket"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -12,6 +13,7 @@ type App struct {
 	Echo    *echo.Echo
 	Db      *bun.DB
 	Routers []routes.Router
+	Hub     *websocket.Hub
 }
 
 func (app *App) StartServer() {
@@ -28,6 +30,7 @@ func (app *App) StartServer() {
 func (app *App) registerMiddlewares() {
 
 	app.Echo.Use(middleware.Logger())
+	app.Echo.Use(middleware.Recover())
 
 }
 
@@ -37,10 +40,11 @@ func (app *App) registerRoutes() {
 	}
 }
 
-func NewApp(echo *echo.Echo, db *bun.DB, routers []routes.Router) *App {
+func NewApp(echo *echo.Echo, db *bun.DB, routers []routes.Router, hub *websocket.Hub) *App {
 	return &App{
 		echo,
 		db,
 		routers,
+		hub,
 	}
 }

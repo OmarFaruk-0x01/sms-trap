@@ -29,6 +29,41 @@ func ReadyNotification() templ.ComponentScript {
 	}
 }
 
+func ReadyWebSocket() templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_ReadyWebSocket_78f0`,
+		Function: `function __templ_ReadyWebSocket_78f0(){var loc = window.location;
+    var uri = 'ws:';
+
+    if (loc.protocol === 'https:') {
+      uri = 'wss:';
+    }
+    uri += '//' + loc.host;
+    uri +=  '/ws';
+
+    ws = new WebSocket(uri)
+
+    ws.onopen = function() {
+      console.log('Connected')
+    }
+
+    ws.onmessage = function(evt) {
+        data = JSON.parse(evt.data)
+        if (data.trigger_notification) {
+            new Notification(` + "`" + `New Sms Recived From ${data?.query?.phones?.join(', ')}` + "`" + `, {
+                body: data?.query?.message,
+                icon: "https://cdn-icons-png.flaticon.com/512/6711/6711888.png",
+                onclick: function() { window.parent.focus();
+                         notification.close(); }
+            })
+        }
+    }
+}`,
+		Call:       templ.SafeScript(`__templ_ReadyWebSocket_78f0`),
+		CallInline: templ.SafeScriptInline(`__templ_ReadyWebSocket_78f0`),
+	}
+}
+
 func RootLayout() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -42,24 +77,19 @@ func RootLayout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/app.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&amp;display=swap\" rel=\"stylesheet\"><style>\n                .exo-2-thin {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 100;\n                font-style: normal;\n                }\n\n                .exo-2-extralight {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 200;\n                font-style: normal;\n                }\n\n                .exo-2-light {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 300;\n                font-style: normal;\n                }\n\n                .exo-2-regular {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 400;\n                font-style: normal;\n                }\n\n                .exo-2-medium {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 500;\n                font-style: normal;\n                }\n\n                .exo-2-semibold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 600;\n                font-style: normal;\n                }\n\n                .exo-2-bold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 700;\n                font-style: normal;\n                }\n\n                .exo-2-extrabold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 800;\n                font-style: normal;\n                }\n\n                .exo-2-black {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 900;\n                font-style: normal;\n                }\n\n                .exo-2-thin-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 100;\n                font-style: italic;\n                }\n\n                .exo-2-extralight-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 200;\n                font-style: italic;\n                }\n\n                .exo-2-light-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 300;\n                font-style: italic;\n                }\n\n                .exo-2-regular-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 400;\n                font-style: italic;\n                }\n\n                .exo-2-medium-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 500;\n                font-style: italic;\n                }\n\n                .exo-2-semibold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 600;\n                font-style: italic;\n                }\n\n                .exo-2-bold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 700;\n                font-style: italic;\n                }\n\n                .exo-2-extrabold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 800;\n                font-style: italic;\n                }\n\n                .exo-2-black-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 900;\n                font-style: italic;\n                }\n\n            </style></head>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/app.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&amp;display=swap\" rel=\"stylesheet\"><style>\n                .exo-2-thin {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 100;\n                font-style: normal;\n                }\n\n                .exo-2-extralight {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 200;\n                font-style: normal;\n                }\n\n                .exo-2-light {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 300;\n                font-style: normal;\n                }\n\n                .exo-2-regular {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 400;\n                font-style: normal;\n                }\n\n                .exo-2-medium {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 500;\n                font-style: normal;\n                }\n\n                .exo-2-semibold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 600;\n                font-style: normal;\n                }\n\n                .exo-2-bold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 700;\n                font-style: normal;\n                }\n\n                .exo-2-extrabold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 800;\n                font-style: normal;\n                }\n\n                .exo-2-black {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 900;\n                font-style: normal;\n                }\n\n                .exo-2-thin-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 100;\n                font-style: italic;\n                }\n\n                .exo-2-extralight-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 200;\n                font-style: italic;\n                }\n\n                .exo-2-light-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 300;\n                font-style: italic;\n                }\n\n                .exo-2-regular-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 400;\n                font-style: italic;\n                }\n\n                .exo-2-medium-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 500;\n                font-style: italic;\n                }\n\n                .exo-2-semibold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 600;\n                font-style: italic;\n                }\n\n                .exo-2-bold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 700;\n                font-style: italic;\n                }\n\n                .exo-2-extrabold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 800;\n                font-style: italic;\n                }\n\n                .exo-2-black-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 900;\n                font-style: italic;\n                }\n\n            </style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, ReadyNotification())
+		templ_7745c5c3_Err = ReadyNotification().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body onload=\"")
+		templ_7745c5c3_Err = ReadyWebSocket().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 templ.ComponentScript = ReadyNotification()
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2.Call)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"exo-2-regular\"><header class=\"p-5 flex items-center justify-between\"><span class=\"exo-2-black-italic text-2xl\">SMS Trap</span></header><hr>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"exo-2-regular\"><header class=\"p-5 flex items-center justify-between\"><span class=\"exo-2-black-italic text-2xl\">SMS Trap</span></header><hr>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

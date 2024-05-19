@@ -5,6 +5,7 @@ import (
 	"OmarFaruk-0x01/sms-trap/app/database"
 	"OmarFaruk-0x01/sms-trap/app/database/migration"
 	"OmarFaruk-0x01/sms-trap/app/routes"
+	"OmarFaruk-0x01/sms-trap/app/websocket"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -28,12 +29,17 @@ func main() {
 
 	echo.Validator = app.NewAppValidator()
 
+	hub := websocket.NewHub()
+
 	routers := []routes.Router{
 		routes.NewWebRouter("", echo, db),
-		routes.NewApiRouter("/api/v1", echo, db),
+		routes.NewApiRouter("/api/v1", echo, db, hub),
+		routes.NewWebSocketRouter("/ws", echo, db, hub),
 	}
 
-	app := app.NewApp(echo, db, routers)
+	app := app.NewApp(echo, db, routers, hub)
+
+	go hub.Run()
 
 	runCommand(app, os.Args[1])
 }

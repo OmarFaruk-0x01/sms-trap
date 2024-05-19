@@ -16,12 +16,12 @@ templ PhonesList(phones []*models.TrapPhones, activePhone string) {
 		for _, phone := range phones {
 			<li
 				data-key={ phone.Phone }
-				class={ "py-5 border-b px-3 transition", templ.KV(" bg-indigo-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-indigo-100 ", activePhone != phone.Phone) }
+				class={ "py-5 border-b px-3 transition", templ.KV(" bg-primary-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-primary-100 ", activePhone != phone.Phone) }
 			>
 				<a href={ templ.SafeURL(phone.Phone) } class="flex justify-between items-center">
 					<h3 class="text-lg font-semibold">{ phone.Phone }</h3>
 					<div class="flex items-center gap-5">
-						<span class="p-2 flex items-center justify-center w-[30px] h-[30px] bg-indigo-500 text-white badge text-md text-center rounded">{ phone.Count }</span>
+						<span class="p-2 flex items-center justify-center w-[30px] h-[30px] bg-primary-500 text-white badge text-md text-center rounded">{ phone.Count }</span>
 						<p class="text-md text-gray-400">{ phone.LastSmsAt.Format("15:04") }</p>
 					</div>
 				</a>

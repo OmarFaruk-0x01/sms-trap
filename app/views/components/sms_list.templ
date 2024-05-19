@@ -1,21 +1,42 @@
 package components
 
 import "OmarFaruk-0x01/sms-trap/app/models"
+import "strings"
+import "OmarFaruk-0x01/sms-trap/app/views/icons"
 
+script Clipboard(text string) {
+	navigator.clipboard.writeText(text)
+	Toastify({
+        text: "Copied to clipboard",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+            background: "#14B3DA",
+            color: "#fff",
+            borderRadius: ".5rem",
+        },
+        onClick: function(){}
+    }).showToast();
+}
 
 templ SmsList(traps []*models.Trap) {
-	<section class="h-full flex flex-col space-y-3">
-		for _, trap := range traps {
-			<div class="flex items-start gap-2.5">
-				<div class="flex flex-col w-full max-w-[520px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl">
+	for _, trap := range traps {
+		<div class="flex items-start gap-2.5">
+			<div class="flex flex-col max-w-full leading-1.5 p-4 border bg-white rounded-e-xl rounded-es-xl hover:border-primary-400 duration-200 transition-all ">
+				<div class="flex justify-between items-center gap-5">
 					<div class="flex items-center space-x-2 rtl:space-x-reverse">
 						<span class="text-sm font-semibold text-gray-900">{ trap.Phone }</span>
 						<span class="text-sm font-normal text-gray-500 ">{ trap.CreatedAt.Format("02 Jan 2006 15:04") }</span>
 					</div>
-					<p class="text-sm font-normal py-2.5 text-gray-900">{ trap.Message }</p>
-					<span class="text-sm font-normal text-gray-500 ">{trap.Type}</span>
+					<button class="active:scale-95 transition hover:text-primary-500" onclick={ Clipboard(trap.Message) }>
+						@icons.Clipboard()
+					</button>
 				</div>
+				<p class="text-sm font-normal py-2.5 text-gray-900 break-words">{ trap.Message }</p>
+				<span class="w-fit rounded-md bg-primary-100 text-primary-500 font-semibold border-primary-500 border px-1.5 py-1 text-[10px] font-normal text-gray-500 ">{ strings.ToTitle(trap.Type) }</span>
 			</div>
-		}
-	</section>
+		</div>
+	}
 }

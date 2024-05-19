@@ -9,23 +9,25 @@ import (
 templ Home(phones []*models.TrapPhones, selectedTraps []*models.Trap, activePhone string) {
 	@layouts.RootLayout() {
 		<main class="flex w-full h-[calc(100vh-72px)] rounded-3xl">
-			<section class="flex flex-col pt-3 w-4/12 bg-gray-50 h-full overflow-y-scroll">
+			<section class="flex flex-col pt-3 w-3/12 h-full overflow-y-scroll">
 				@components.PhonesList(phones, activePhone)
 			</section>
-			<section class="w-8/12  overflow-y-scroll px-4 flex flex-col bg-white rounded-r-3xl">
-				<div class="sticky top-0 bg-white flex flex-col justify-between items-start h-[48px] mb-3">
-					<div class="py-3 flex space-x-4 items-center">
+			<section class="w-5/12 overflow-y-scroll px-4 flex flex-col  py-5 bg-gray-50 gap-2 items-start">
+				if activePhone != "" {
+					@components.SmsList(selectedTraps)
+				} else {
+					@components.BlankView("Please select a phone number to see sms")
+				}
+			</section>
+			<section class="w-4/12 h-full overflow-y-scroll">
+				<div class="sticky top-0 bg-white flex flex-col justify-between items-start">
+					<div class="p-4 flex  items-center">
 						<div class="flex flex-col">
 							<h3 class="font-semibold text-lg">{activePhone}</h3>
 						</div>
 					</div>
 					<hr class="w-full"/>
 				</div>
-				if activePhone != "" {
-					@components.SmsList(selectedTraps)
-				} else {
-					@components.BlankView("Please select a phone number to see sms")
-				}
 			</section>
 		</main>
 	}

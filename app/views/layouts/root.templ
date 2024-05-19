@@ -13,6 +13,7 @@ script ReadyNotification() {
     }
 }
 
+
 script ReadyWebSocket() {
 
     var loc = window.location;
@@ -53,6 +54,8 @@ templ RootLayout() {
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 			<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+			<link rel="stylesheet" defer type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
+			<script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 			<style>
                 .exo-2-thin {
                 font-family: "Exo 2", sans-serif;
@@ -167,8 +170,8 @@ templ RootLayout() {
 			@ReadyWebSocket()
 		</head>
 		<body class="exo-2-regular">
-			<header class="p-5 flex items-center justify-between">
-				<span class="exo-2-black-italic text-2xl">SMS Trap</span>
+			<header class="px-5 py-2 flex items-center justify-between">
+				<img src="/static/logo.svg" alt="logo" width="200px" height="0px"/>
 			</header>
 			<hr/>
 			{ children... }

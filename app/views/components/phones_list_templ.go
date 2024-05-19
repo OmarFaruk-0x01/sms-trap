@@ -32,7 +32,7 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 			return templ_7745c5c3_Err
 		}
 		for _, phone := range phones {
-			var templ_7745c5c3_Var2 = []any{"py-5 border-b px-3 transition", templ.KV(" bg-indigo-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-indigo-100 ", activePhone != phone.Phone)}
+			var templ_7745c5c3_Var2 = []any{"py-5 border-b px-3 transition", templ.KV(" bg-primary-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-primary-100 ", activePhone != phone.Phone)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -85,14 +85,14 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3><div class=\"flex items-center gap-5\"><span class=\"p-2 flex items-center justify-center w-[30px] h-[30px] bg-indigo-500 text-white badge text-md text-center rounded\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3><div class=\"flex items-center gap-5\"><span class=\"p-2 flex items-center justify-center w-[30px] h-[30px] bg-primary-500 text-white badge text-md text-center rounded\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(phone.Count)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 24, Col: 147}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 24, Col: 148}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {

@@ -10,6 +10,25 @@ import "context"
 import "io"
 import "bytes"
 
+func ReadyNotification() templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_ReadyNotification_319a`,
+		Function: `function __templ_ReadyNotification_319a(){if (!("Notification" in window)) {
+        // Check if the browser supports notifications
+        alert("This browser does not support desktop notification");
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                console.log("Notification permission granted");
+            }
+        });
+    }
+}`,
+		Call:       templ.SafeScript(`__templ_ReadyNotification_319a`),
+		CallInline: templ.SafeScriptInline(`__templ_ReadyNotification_319a`),
+	}
+}
+
 func RootLayout() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -23,7 +42,24 @@ func RootLayout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/app.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap\" rel=\"stylesheet\"><style>\n                .poppins-thin {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 100;\n                font-style: normal;\n                }\n\n                .poppins-extralight {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 200;\n                font-style: normal;\n                }\n\n                .poppins-light {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 300;\n                font-style: normal;\n                }\n\n                .poppins-regular {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 400;\n                font-style: normal;\n                }\n\n                .poppins-medium {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 500;\n                font-style: normal;\n                }\n\n                .poppins-semibold {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 600;\n                font-style: normal;\n                }\n\n                .poppins-bold {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 700;\n                font-style: normal;\n                }\n\n                .poppins-extrabold {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 800;\n                font-style: normal;\n                }\n\n                .poppins-black {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 900;\n                font-style: normal;\n                }\n\n                .poppins-thin-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 100;\n                font-style: italic;\n                }\n\n                .poppins-extralight-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 200;\n                font-style: italic;\n                }\n\n                .poppins-light-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 300;\n                font-style: italic;\n                }\n\n                .poppins-regular-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 400;\n                font-style: italic;\n                }\n\n                .poppins-medium-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 500;\n                font-style: italic;\n                }\n\n                .poppins-semibold-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 600;\n                font-style: italic;\n                }\n\n                .poppins-bold-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 700;\n                font-style: italic;\n                }\n\n                .poppins-extrabold-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 800;\n                font-style: italic;\n                }\n\n                .poppins-black-italic {\n                font-family: \"Poppins\", sans-serif;\n                font-weight: 900;\n                font-style: italic;\n                }\n\n            </style></head><body class=\"poppins-regular\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/app.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&amp;display=swap\" rel=\"stylesheet\"><style>\n                .exo-2-thin {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 100;\n                font-style: normal;\n                }\n\n                .exo-2-extralight {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 200;\n                font-style: normal;\n                }\n\n                .exo-2-light {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 300;\n                font-style: normal;\n                }\n\n                .exo-2-regular {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 400;\n                font-style: normal;\n                }\n\n                .exo-2-medium {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 500;\n                font-style: normal;\n                }\n\n                .exo-2-semibold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 600;\n                font-style: normal;\n                }\n\n                .exo-2-bold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 700;\n                font-style: normal;\n                }\n\n                .exo-2-extrabold {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 800;\n                font-style: normal;\n                }\n\n                .exo-2-black {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 900;\n                font-style: normal;\n                }\n\n                .exo-2-thin-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 100;\n                font-style: italic;\n                }\n\n                .exo-2-extralight-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 200;\n                font-style: italic;\n                }\n\n                .exo-2-light-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 300;\n                font-style: italic;\n                }\n\n                .exo-2-regular-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 400;\n                font-style: italic;\n                }\n\n                .exo-2-medium-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 500;\n                font-style: italic;\n                }\n\n                .exo-2-semibold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 600;\n                font-style: italic;\n                }\n\n                .exo-2-bold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 700;\n                font-style: italic;\n                }\n\n                .exo-2-extrabold-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 800;\n                font-style: italic;\n                }\n\n                .exo-2-black-italic {\n                font-family: \"Exo 2\", sans-serif;\n                font-weight: 900;\n                font-style: italic;\n                }\n\n            </style></head>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, ReadyNotification())
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body onload=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 templ.ComponentScript = ReadyNotification()
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"exo-2-regular\"><header class=\"p-5 flex items-center justify-between\"><span class=\"exo-2-black-italic text-2xl\">SMS Trap</span></header><hr>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

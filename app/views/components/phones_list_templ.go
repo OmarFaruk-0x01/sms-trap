@@ -12,19 +12,7 @@ import "bytes"
 
 import (
 	"OmarFaruk-0x01/sms-trap/app/models"
-	"OmarFaruk-0x01/sms-trap/app/utils"
-	"time"
 )
-
-func Filter(text string) templ.ComponentScript {
-	return templ.ComponentScript{
-		Name: `__templ_Filter_337c`,
-		Function: `function __templ_Filter_337c(text){alert(text)
-}`,
-		Call:       templ.SafeScript(`__templ_Filter_337c`, text),
-		CallInline: templ.SafeScriptInline(`__templ_Filter_337c`, text),
-	}
-}
 
 func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -44,7 +32,7 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 			return templ_7745c5c3_Err
 		}
 		for _, phone := range phones {
-			var templ_7745c5c3_Var2 = []any{"py-5 border-b px-3 transition ", templ.KV(" bg-indigo-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-indigo-100 ", activePhone != phone.Phone)}
+			var templ_7745c5c3_Var2 = []any{"py-5 border-b px-3 transition", templ.KV(" bg-indigo-100 ", activePhone == phone.Phone), templ.KV(" hover:bg-indigo-100 ", activePhone != phone.Phone)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -56,7 +44,7 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(phone.Phone)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 26, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 18, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -91,26 +79,39 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(phone.Phone)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 30, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 22, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3><p class=\"text-md text-gray-400\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3><div class=\"flex items-center gap-5\"><span class=\"p-2 flex items-center justify-center w-[30px] h-[30px] bg-indigo-500 text-white badge text-md text-center rounded\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(utils.FormatDuration(time.Since(phone.LastSmsAt)))
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(phone.Count)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 31, Col: 89}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 24, Col: 147}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></a></li>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span><p class=\"text-md text-gray-400\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var8 string
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(phone.LastSmsAt.Format("15:04"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/phones_list.templ`, Line: 25, Col: 72}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div></a></li>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

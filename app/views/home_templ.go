@@ -35,7 +35,7 @@ func Home(phones []*models.TrapPhones, selectedTraps []*models.Trap, activePhone
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"flex w-full h-full sha:ow-lg rounded-3xl\"><section class=\"flex flex-col pt-3 w-4/12 bg-gray-50 h-full overflow-y-scroll\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"flex w-full h-[calc(100vh-72px)] rounded-3xl\"><section class=\"flex flex-col pt-3 w-4/12 bg-gray-50 h-full overflow-y-scroll\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -43,7 +43,7 @@ func Home(phones []*models.TrapPhones, selectedTraps []*models.Trap, activePhone
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section><section class=\"w-8/12 h-screen overflow-y-scroll px-4 flex flex-col bg-white rounded-r-3xl\"><div class=\"sticky top-0 bg-white flex flex-col justify-between items-start h-[48px] mb-3\"><div class=\"py-3 flex space-x-4 items-center\"><div class=\"flex flex-col\"><h3 class=\"font-semibold text-lg\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section><section class=\"w-8/12  overflow-y-scroll px-4 flex flex-col bg-white rounded-r-3xl\"><div class=\"sticky top-0 bg-white flex flex-col justify-between items-start h-[48px] mb-3\"><div class=\"py-3 flex space-x-4 items-center\"><div class=\"flex flex-col\"><h3 class=\"font-semibold text-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -8,7 +8,7 @@ build: generate build_css
 	go build -o ./tmp/main ./main.go
 
 build_css:
-	npx tailwindcss -i ./assets/app.css -o ./public/app.css
+	npx tailwindcss -i ./assets/app.css -o ./public/css/app.css
 
 generate:
 	templ generate; go mod tidy

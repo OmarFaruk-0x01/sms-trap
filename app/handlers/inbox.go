@@ -16,20 +16,36 @@ type InboxHandler struct {
 
 func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		traps, err := inbox.smsTrapService.GetPhones()
+		phones, err := inbox.smsTrapService.GetPhones()
 
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
 		activePhone := c.Param("phone")
+		activeTab := c.QueryParam("tab")
+		activeTimeFilter := c.QueryParam("time")
+
+		if activeTab == "" {
+			activeTab = "stats"
+		}
+
+		if activeTimeFilter == "" {
+			activeTimeFilter = "today"
+		}
 
 		selectedTraps, err := inbox.smsTrapService.FindAllByPhone(activePhone)
 		if err != nil {
 			return c.String(404, "Not Found")
 		}
 
-		return views.Render(views.Home(traps, selectedTraps, activePhone), http.StatusOK, c)
+		return views.Render(views.Home(&views.HomeProps{
+			Phones:           phones,
+			SelectedTraps:    selectedTraps,
+			ActivePhone:      activePhone,
+			ActiveTab:        activeTab,
+			ActiveTimeFilter: activeTimeFilter,
+		}), http.StatusOK, c)
 	}
 }
 

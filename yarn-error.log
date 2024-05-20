@@ -1,0 +1,50 @@
+Arguments: 
+  /Users/dev-kit/.nvm/versions/node/v18.17.1/bin/node /Users/dev-kit/.nvm/versions/node/v18.17.1/bin/yarn add apexchart
+
+PATH: 
+  /Users/dev-kit/.sdkman/candidates/java/current/bin:/Users/dev-kit/Library/Application Support/Herd/bin/:/Users/dev-kit/.console-ninja/.bin:/Users/dev-kit/.gem/ruby/3.3.0/bin:/Users/dev-kit/.gem/bin:/Users/dev-kit/development/flutter/bin:/Users/dev-kit/.composer/vendor/bin:/Users/dev-kit/Library/pnpm:/Users/dev-kit/.nvm/versions/node/v18.17.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/dev-kit/.orbstack/bin:/Users/dev-kit/.templ/bin:/Users/dev-kit/.air/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.17.1
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/apexchart: Not found
+      at params.callback [as _callback] (/Users/dev-kit/.nvm/versions/node/v18.17.1/lib/node_modules/yarn/lib/cli.js:66145:18)
+      at self.callback (/Users/dev-kit/.nvm/versions/node/v18.17.1/lib/node_modules/yarn/lib/cli.js:140890:22)
+      at Request.emit (node:events:514:28)
+      at Request.<anonymous> (/Users/dev-kit/.nvm/versions/node/v18.17.1/lib/node_modules/yarn/lib/cli.js:141862:10)
+      at Request.emit (node:events:514:28)
+      at IncomingMessage.<anonymous> (/Users/dev-kit/.nvm/versions/node/v18.17.1/lib/node_modules/yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:628:28)
+      at IncomingMessage.emit (node:events:526:35)
+      at endReadableNT (node:internal/streams/readable:1359:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+npm manifest: 
+  {
+    "name": "sms-trap",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "tailwindcss": "^3.4.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -1,0 +1,17 @@
+package core
+
+type TabsProps struct {
+	ActiveTab string
+	TabItems  []*TabItemProps
+}
+
+templ Tabs(props *TabsProps) {
+	<div class="sticky top-[61px] border-b border-gray-200px z-40 bg-white">
+		<ul class=" flex flex-wrap  text-sm font-medium text-center text-gray-500 dark:text-gray-400 z-40">
+			for _, tabItem := range props.TabItems {
+				@TabItem(tabItem)
+			}
+		</ul>
+	</div>
+	{ children... }
+}

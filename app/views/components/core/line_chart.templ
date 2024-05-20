@@ -1,0 +1,114 @@
+package core
+
+script LineChartScript() {
+const chartConfig = {
+  series: [
+    {
+      name: "Transactional",
+      data: Array(30).fill(0).map((_, i) => Math.round(Math.random() * 1000)),
+    },
+    {
+      name: "Promotional",
+      data: Array(30).fill(0).map((_, i) => Math.round(Math.random() * 1000)),
+    },
+  ],
+  chart: {
+    type: "line",
+    height: 240,
+    toolbar: {
+      show: false,
+    },
+  },
+  title: {
+    show: "",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  colors: ["#14B3DA", "#FFC107"],
+  stroke: {
+    lineCap: "round",
+    curve: "smooth",
+  },
+  markers: {
+    size: 0,
+  },
+  xaxis: {
+    axisTicks: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+    labels: {
+      style: {
+        colors: "#616161",
+        fontSize: "12px",
+        fontFamily: "inherit",
+        fontWeight: 400,
+      },
+    },
+    categories: Array(30).fill(0).map((_, i) => i + 1),
+  },
+  yaxis: {
+    labels: {
+      style: {
+        colors: "#616161",
+        fontSize: "12px",
+        fontFamily: "inherit",
+        fontWeight: 400,
+      },
+    },
+  },
+  grid: {
+    show: true,
+    borderColor: "#dddddd",
+    strokeDashArray: 5,
+    xaxis: {
+      lines: {
+        show: true,
+      },
+    },
+    padding: {
+      top: 5,
+      right: 20,
+    },
+  },
+  fill: {
+    opacity: 0.8,
+  },
+  tooltip: {
+    theme: "dark",
+  },
+};
+
+
+    if (document.getElementById("chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("chart"), chartConfig);
+        chart.render();
+    }
+
+}
+
+templ LineChart() {
+	<div class="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 z-0">
+		// <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center">
+		// 	<div class="w-max rounded-lg bg-gray-900 p-5 text-white">
+
+		// 	</div>
+		// 	<div>
+		// 		<h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
+		// 			Line Chart
+		// 		</h6>
+		// 		<p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">
+		// 			Visualize your data in a simple way using the
+		// 			-tailwind/html chart plugin.
+		// 		</p>
+		// 	</div>
+		// </div>
+		<div class="px-2 pb-0">
+			<div id="chart"></div>
+		</div>
+	</div>
+	@LineChartScript()
+}

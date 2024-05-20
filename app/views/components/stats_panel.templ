@@ -1,0 +1,66 @@
+package components
+
+import "OmarFaruk-0x01/sms-trap/app/views/components/core"
+
+var TimeFilterOptions = []*core.SelectItem{
+	{
+		Title: "Today",
+		Value: "today",
+	},
+	{
+		Title: "Yesterday",
+		Value: "yesterday",
+	},
+	{
+		Title: "Last 7 Days",
+		Value: "week",
+	},
+	{
+		Title: "Last 30 Days",
+		Value: "month",
+	},
+}
+
+func getFilterLabel(timeFilter string) string {
+	for index, item := range TimeFilterOptions {
+		if item.Value == timeFilter && index >= 2 {
+			return "In " + item.Title
+		}
+		if item.Value == timeFilter && index < 2 {
+			return item.Title
+		}
+	}
+	return ""
+}
+
+type StatsPanelProps struct {
+	ActiveTimeFilter string
+}
+
+templ StatsPanel(props *StatsPanelProps) {
+	<div class="w-full">
+		<script>
+            function onSelectChange(event){
+                const searchParams = new URLSearchParams(window.location.search);
+                searchParams.set("time", event.detail.value);
+                window.location.search = searchParams.toString();
+            }
+        </script>
+		<section class="p-2 flex items-center justify-between gap-2 z-20 relative" x-data @stats-select-change="onSelectChange">
+			<h2 class="text-lg font-semibold">
+				Traped { getFilterLabel(props.ActiveTimeFilter) }
+			</h2>
+			@core.Select(&core.SelectProps{
+				Items: TimeFilterOptions,
+				Value: props.ActiveTimeFilter,
+				Id:    "stats-select",
+			})
+		</section>
+		@core.LineChart()
+		<section class="grid grid-cols-1 gap-4">
+			@core.StatsCard("Total SMS Sent", "1000")
+			@core.StatsCard("Total SMS", "1000")
+			@core.StatsCard("Total SMS", "1000")
+		</section>
+	</div>
+}

@@ -13,7 +13,6 @@ script ReadyNotification() {
     }
 }
 
-
 script ReadyWebSocket() {
 
     var loc = window.location;
@@ -50,121 +49,20 @@ templ RootLayout() {
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>Sms Trap</title>
-			<link rel="stylesheet" href="/static/app.css"/>
-			<link rel="preconnect" href="https://fonts.googleapis.com"/>
-			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-			<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
-			<link rel="stylesheet" defer type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
-			<script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+			<link rel="stylesheet" href="/static/css/app.css"/>
+			<link rel="stylesheet" defer type="text/css" href="/static/css/toastify.min.css"/>
+			<script defer type="text/javascript" src="/static/js/toastify-js.min.js"></script>
+			<script src="/static/js/apexcharts.min.js"></script>
+			<script defer src="/static/js/alpinejs.min.js"></script>
 			<style>
-                .exo-2-thin {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 100;
-                font-style: normal;
+                body {
+                    font-family: 'Exo 2', sans-serif;
                 }
 
-                .exo-2-extralight {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 200;
-                font-style: normal;
+                [x-cloak] {
+                    display: none;
                 }
-
-                .exo-2-light {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 300;
-                font-style: normal;
-                }
-
-                .exo-2-regular {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 400;
-                font-style: normal;
-                }
-
-                .exo-2-medium {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 500;
-                font-style: normal;
-                }
-
-                .exo-2-semibold {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 600;
-                font-style: normal;
-                }
-
-                .exo-2-bold {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 700;
-                font-style: normal;
-                }
-
-                .exo-2-extrabold {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 800;
-                font-style: normal;
-                }
-
-                .exo-2-black {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 900;
-                font-style: normal;
-                }
-
-                .exo-2-thin-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 100;
-                font-style: italic;
-                }
-
-                .exo-2-extralight-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 200;
-                font-style: italic;
-                }
-
-                .exo-2-light-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 300;
-                font-style: italic;
-                }
-
-                .exo-2-regular-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 400;
-                font-style: italic;
-                }
-
-                .exo-2-medium-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 500;
-                font-style: italic;
-                }
-
-                .exo-2-semibold-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 600;
-                font-style: italic;
-                }
-
-                .exo-2-bold-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 700;
-                font-style: italic;
-                }
-
-                .exo-2-extrabold-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 800;
-                font-style: italic;
-                }
-
-                .exo-2-black-italic {
-                font-family: "Exo 2", sans-serif;
-                font-weight: 900;
-                font-style: italic;
-                }
-
             </style>
 			@ReadyNotification()
 			@ReadyWebSocket()

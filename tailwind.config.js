@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ["./**/*.html", "./**/*.templ", "./**/*.go",],
+    darkMode: 'class',
     theme: {
         extend: {
+            extend: {
+                fontFamily: {
+                    'exo': ['Exo 2', 'sans-serif'],
+                },
+            },
             colors: {
                 primary: {
                     '50': '#edfcfe',

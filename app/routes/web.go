@@ -2,6 +2,7 @@ package routes
 
 import (
 	"OmarFaruk-0x01/sms-trap/app/handlers"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
@@ -15,8 +16,12 @@ type WebRouter struct {
 
 func (web *WebRouter) Register() {
 
-	web.router.GET("/", web.inboxHandler.ShowInbox())
-	web.router.GET("/:phone", web.inboxHandler.ShowInbox())
+	web.router.GET("/", func(c echo.Context) error {
+		return c.Redirect(http.StatusPermanentRedirect, "/inbox")
+	})
+
+	web.router.GET("/inbox", web.inboxHandler.ShowInbox())
+	web.router.GET("/inbox/:phone", web.inboxHandler.ShowInbox())
 
 }
 

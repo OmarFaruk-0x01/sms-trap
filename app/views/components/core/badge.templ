@@ -1,0 +1,42 @@
+package core
+
+import "strings"
+
+type BadgeProps struct {
+	Text           string
+	TextAlpineExp  string
+	Color          string
+	ColorAlpineExp string
+}
+
+templ Badge(props *BadgeProps) {
+	if props.TextAlpineExp == "" {
+		<span
+			class={
+				templ.SafeClass("w-fit rounded-md  font-semibold border px-1.5 py-1 text-[10px] font-normal "),
+				templ.KV("bg-primary-100 text-primary-500  border-primary-500", props.Color == "primary"),
+				templ.KV("bg-red-100 text-red-500  border-red-500", props.Color == "danger"),
+				templ.KV("bg-yellow-100 text-yellow-500  border-yellow-500", props.Color == "warning"),
+				templ.KV("bg-teal-100 text-teal-500  border-teal-500", props.Color == "success"),
+			}
+		>{ strings.ToTitle(props.Text) }</span>
+	} else {
+		<span
+			x-data
+			x-init="$watch('$store.smsDetails.sms', () => {
+                $el.className = ({
+                    primary: 'bg-primary-100 text-primary-500  border-primary-500',
+                    danger: 'bg-red-100 text-red-500  border-red-500',
+                    warning: 'bg-yellow-100 text-yellow-500  border-yellow-500',
+                }[eval($el.dataset.color)] || '') + ' ' + $el.className
+            })"
+			data-color={ props.ColorAlpineExp }
+			class={ templ.SafeClass("w-fit rounded-md  font-semibold border px-1.5 py-1 text-[10px] font-normal "),
+            templ.KV("bg-primary-100 text-primary-500  border-primary-500", props.Color == "primary"),
+				templ.KV("bg-red-100 text-red-500  border-red-500", props.Color == "danger"),
+				templ.KV("bg-yellow-100 text-yellow-500  border-yellow-500", props.Color == "warning"),
+				templ.KV("bg-teal-100 text-teal-500  border-teal-500", props.Color == "success") }
+			x-text={ props.TextAlpineExp }
+		></span>
+	}
+}

@@ -31,6 +31,7 @@ func (app *App) registerMiddlewares() {
 
 	app.Echo.Use(middleware.Logger())
 	app.Echo.Use(middleware.Recover())
+	app.Echo.Pre(middleware.RemoveTrailingSlash())
 
 }
 

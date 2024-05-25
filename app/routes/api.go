@@ -17,6 +17,7 @@ type ApiRouter struct {
 
 func (api *ApiRouter) Register() {
 	api.router.GET("/trap", api.smsTrapHandler.Trap())
+	api.router.DELETE("/traps", api.smsTrapHandler.DeleteAll())
 }
 
 func NewApiRouter(prefix string, echo *echo.Echo, db *bun.DB, hub *websocket.Hub) *ApiRouter {

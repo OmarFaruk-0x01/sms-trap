@@ -34,7 +34,7 @@ func main() {
 	routers := []routes.Router{
 		routes.NewWebRouter("", echo, db),
 		routes.NewApiRouter("/api/v1", echo, db, hub),
-		routes.NewWebSocketRouter("/ws", echo, db, hub),
+		routes.NewWebSocketRouter("/ws/", echo, db, hub),
 	}
 
 	app := app.NewApp(echo, db, routers, hub)

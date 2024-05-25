@@ -1,5 +1,7 @@
 package layouts
 
+import "OmarFaruk-0x01/sms-trap/app/views/components/core"
+
 script ReadyNotification() {
     if (!("Notification" in window)) {
         // Check if the browser supports notifications
@@ -13,6 +15,39 @@ script ReadyNotification() {
     }
 }
 
+script RegisterAlpineStore() {
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('navbar', {
+            on: true,
+            toggle() {
+                this.on = !this.on
+            }
+        })
+
+        Alpine.store('phoneList', {
+            phones: [],
+            init(){
+
+            }
+        })
+
+        Alpine.store('smsDetails', {
+            sms: null,
+            open: false,
+            selectSms(sms) {
+                this.sms = sms
+                this.open = true
+            },
+            close(){
+                this.open = false
+                setTimeout(() => {
+                    this.sms = null
+                },300)
+            }
+        })
+    })
+}
+
 script ReadyWebSocket() {
 
     var loc = window.location;
@@ -22,7 +57,7 @@ script ReadyWebSocket() {
       uri = 'wss:';
     }
     uri += '//' + loc.host;
-    uri +=  '/ws';
+    uri +=  '/ws/';
 
     ws = new WebSocket(uri)
 
@@ -32,6 +67,7 @@ script ReadyWebSocket() {
 
     ws.onmessage = function(evt) {
         data = JSON.parse(evt.data)
+        console.log(data)
         if (data.trigger_notification) {
             new Notification(`New Sms Recived From ${data?.query?.phones?.join(', ')}`, {
                 body: data?.query?.message,
@@ -49,11 +85,15 @@ templ RootLayout() {
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>Sms Trap</title>
-
+			<link rel="stylesheet" href="/static/css/tippy.css"/>
 			<link rel="stylesheet" href="/static/css/app.css"/>
-			<link rel="stylesheet" defer type="text/css" href="/static/css/toastify.min.css"/>
-			<script defer type="text/javascript" src="/static/js/toastify-js.min.js"></script>
 			<script src="/static/js/apexcharts.min.js"></script>
+			<script src="/static/js/dayjs.min.js"></script>
+			<script src="/static/js/axios.min.js"></script>
+			<script src="/static/js/relativeTime.js"></script>
+			<script src="/static/js/utils.js"></script>
+			<script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
+			<script defer src="/static/js/alpine-tooltip.min.js"></script>
 			<script defer src="/static/js/alpinejs.min.js"></script>
 			<style>
                 body {
@@ -66,12 +106,10 @@ templ RootLayout() {
             </style>
 			@ReadyNotification()
 			@ReadyWebSocket()
+			@RegisterAlpineStore()
+			@core.Toaster()
 		</head>
 		<body class="exo-2-regular">
-			<header class="px-5 py-2 flex items-center justify-between">
-				<img src="/static/logo.svg" alt="logo" width="200px" height="0px"/>
-			</header>
-			<hr/>
 			{ children... }
 		</body>
 	</html>

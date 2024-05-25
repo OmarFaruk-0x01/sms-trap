@@ -10,6 +10,8 @@ import "context"
 import "io"
 import "bytes"
 
+import "OmarFaruk-0x01/sms-trap/app/views/components/core"
+
 func ReadyNotification() templ.ComponentScript {
 	return templ.ComponentScript{
 		Name: `__templ_ReadyNotification_319a`,
@@ -29,17 +31,56 @@ func ReadyNotification() templ.ComponentScript {
 	}
 }
 
+func RegisterAlpineStore() templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_RegisterAlpineStore_ad80`,
+		Function: `function __templ_RegisterAlpineStore_ad80(){document.addEventListener('alpine:init', () => {
+        Alpine.store('navbar', {
+            on: true,
+            toggle() {
+                this.on = !this.on
+            }
+        })
+
+        Alpine.store('phoneList', {
+            phones: [],
+            init(){
+
+            }
+        })
+
+        Alpine.store('smsDetails', {
+            sms: null,
+            open: false,
+            selectSms(sms) {
+                this.sms = sms
+                this.open = true
+            },
+            close(){
+                this.open = false
+                setTimeout(() => {
+                    this.sms = null
+                },300)
+            }
+        })
+    })
+}`,
+		Call:       templ.SafeScript(`__templ_RegisterAlpineStore_ad80`),
+		CallInline: templ.SafeScriptInline(`__templ_RegisterAlpineStore_ad80`),
+	}
+}
+
 func ReadyWebSocket() templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_ReadyWebSocket_78f0`,
-		Function: `function __templ_ReadyWebSocket_78f0(){var loc = window.location;
+		Name: `__templ_ReadyWebSocket_fdcb`,
+		Function: `function __templ_ReadyWebSocket_fdcb(){var loc = window.location;
     var uri = 'ws:';
 
     if (loc.protocol === 'https:') {
       uri = 'wss:';
     }
     uri += '//' + loc.host;
-    uri +=  '/ws';
+    uri +=  '/ws/';
 
     ws = new WebSocket(uri)
 
@@ -49,6 +90,7 @@ func ReadyWebSocket() templ.ComponentScript {
 
     ws.onmessage = function(evt) {
         data = JSON.parse(evt.data)
+        console.log(data)
         if (data.trigger_notification) {
             new Notification(` + "`" + `New Sms Recived From ${data?.query?.phones?.join(', ')}` + "`" + `, {
                 body: data?.query?.message,
@@ -59,8 +101,8 @@ func ReadyWebSocket() templ.ComponentScript {
         }
     }
 }`,
-		Call:       templ.SafeScript(`__templ_ReadyWebSocket_78f0`),
-		CallInline: templ.SafeScriptInline(`__templ_ReadyWebSocket_78f0`),
+		Call:       templ.SafeScript(`__templ_ReadyWebSocket_fdcb`),
+		CallInline: templ.SafeScriptInline(`__templ_ReadyWebSocket_fdcb`),
 	}
 }
 
@@ -77,7 +119,7 @@ func RootLayout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/css/app.css\"><link rel=\"stylesheet\" defer type=\"text/css\" href=\"/static/css/toastify.min.css\"><script defer type=\"text/javascript\" src=\"/static/js/toastify-js.min.js\"></script><script src=\"/static/js/apexcharts.min.js\"></script><script defer src=\"/static/js/alpinejs.min.js\"></script><style>\n                body {\n                    font-family: 'Exo 2', sans-serif;\n                }\n\n                [x-cloak] {\n                    display: none;\n                }\n            </style>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/css/tippy.css\"><link rel=\"stylesheet\" href=\"/static/css/app.css\"><script src=\"/static/js/apexcharts.min.js\"></script><script src=\"/static/js/dayjs.min.js\"></script><script src=\"/static/js/axios.min.js\"></script><script src=\"/static/js/relativeTime.js\"></script><script src=\"/static/js/utils.js\"></script><script>dayjs.extend(window.dayjs_plugin_relativeTime)</script><script defer src=\"/static/js/alpine-tooltip.min.js\"></script><script defer src=\"/static/js/alpinejs.min.js\"></script><style>\n                body {\n                    font-family: 'Exo 2', sans-serif;\n                }\n\n                [x-cloak] {\n                    display: none;\n                }\n            </style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -89,7 +131,15 @@ func RootLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"exo-2-regular\"><header class=\"px-5 py-2 flex items-center justify-between\"><img src=\"/static/logo.svg\" alt=\"logo\" width=\"200px\" height=\"0px\"></header><hr>")
+		templ_7745c5c3_Err = RegisterAlpineStore().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = core.Toaster().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"exo-2-regular\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

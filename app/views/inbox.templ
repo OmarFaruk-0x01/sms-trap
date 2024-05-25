@@ -1,0 +1,96 @@
+package views
+
+import (
+	"OmarFaruk-0x01/sms-trap/app/views/layouts"
+	"OmarFaruk-0x01/sms-trap/app/models"
+	"OmarFaruk-0x01/sms-trap/app/views/icons"
+	"OmarFaruk-0x01/sms-trap/app/views/components/core"
+	"OmarFaruk-0x01/sms-trap/app/views/components"
+)
+
+type InboxProps struct {
+	*layouts.AppLayoutProps
+	Phones           []*models.TrapPhones
+	SelectedTraps    []*models.Trap
+	ActivePhone      string
+	ActiveTab        string
+	ActiveTimeFilter string
+}
+
+templ Inbox(props *InboxProps) {
+	@layouts.AppLayout(props.AppLayoutProps) {
+		<div class="w-full grid grid-cols-[auto_1fr] h-[calc(100vh-40px)] rounded-3xl">
+			// List of all phones
+			<section class="flex flex-col pt-3 w-[350px] h-full overflow-y-scroll border-r">
+				@components.PhonesList(props.Phones, props.ActivePhone)
+			</section>
+			if props.ActivePhone == "" {
+				@components.BlankView("Please select a phone number to see details")
+			} else {
+				// Details view of selected phone
+				<section class="relaw-full h-full overflow-y-scroll">
+					<div class="sticky top-0 bg-white flex flex-col justify-between items-start z-50">
+						<div class="p-4 flex  items-center">
+							<div class="flex items-center gap-2">
+								<div class="w-5 h-5 stroke-primary-500">
+									@icons.Phone()
+								</div>
+								<h3 class="font-semibold text-lg">{ props.ActivePhone }</h3>
+							</div>
+						</div>
+						<hr class="w-full"/>
+					</div>
+					@core.Tabs(&core.TabsProps{
+						ActiveTab: props.ActiveTab,
+						TabItems: []*core.TabItemProps{
+							&core.TabItemProps{
+								Id:        "sms-list",
+								ActiveTab: props.ActiveTab,
+								Icon:      icons.Message,
+								Label:     "SMS",
+							},
+							&core.TabItemProps{
+								Id:        "stats",
+								ActiveTab: props.ActiveTab,
+								Icon:      icons.Stats,
+								Label:     "Stats",
+							},
+							&core.TabItemProps{
+								Id:        "costs",
+								ActiveTab: props.ActiveTab,
+								Icon:      icons.Costs,
+								Label:     "Costs",
+							},
+							&core.TabItemProps{
+								Id:        "concern",
+								ActiveTab: props.ActiveTab,
+								Icon:      icons.Concern,
+								Label:     "Conren",
+							},
+						},
+					}) {
+						<div class="w-full bg-gray-50 min-h-[calc(100dvh-(78px+61px+54px))]">
+							if (props.ActiveTab == "sms-list") {
+								@components.SmsPanel(&components.SmsPanelProps{
+									ActivePhone:   props.ActivePhone,
+									SelectedTraps: props.SelectedTraps,
+								})
+							}
+							if (props.ActiveTab == "stats") {
+								@components.StatsPanel(&components.StatsPanelProps{
+									ActiveTimeFilter: props.ActiveTimeFilter,
+								})
+							}
+							if (props.ActiveTab == "costs") {
+								@components.CostsPanel()
+							}
+							if (props.ActiveTab == "concern") {
+								@components.ConcernPanel()
+							}
+						</div>
+					}
+				</section>
+			}
+		</div>
+	}
+}

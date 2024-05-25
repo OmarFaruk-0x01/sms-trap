@@ -1,0 +1,19 @@
+package components
+
+templ Header() {
+	<header x-data class="px-5 py-2 flex items-center justify-between">
+		<button @click="$store.navbar.toggle()">
+			<template x-if="!$store.navbar.on">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"></path>
+				</svg>
+			</template>
+			<template x-if="$store.navbar.on">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+				</svg>
+			</template>
+		</button>
+	</header>
+	<hr/>
+}

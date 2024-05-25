@@ -20,7 +20,7 @@ type SmsTrapHandler struct {
 type TrapQuery struct {
 	Phones  []string `json:"phones" query:"phones[]" validate:"required,min=1,dive,numeric"`
 	Message string   `json:"message" query:"message" validate:"required"`
-	Type    string   `json:"type" query:"type" validate:"required,oneof=text unicode"`
+	Label   string   `json:"label" query:"label" validate:"required,oneof=transactional promotional"`
 }
 
 type TrapMessage struct {
@@ -51,7 +51,7 @@ func (sms *SmsTrapHandler) Trap() echo.HandlerFunc {
 			traps = append(traps, &models.TrapDTO{
 				Phone:   phone,
 				Message: query.Message,
-				Type:    query.Type,
+				Label:   query.Label,
 			})
 		}
 
@@ -72,6 +72,22 @@ func (sms *SmsTrapHandler) Trap() echo.HandlerFunc {
 		}
 
 		sms.hub.Broadcast(websocket.NewMessage([]byte(message), nil))
+
+		return c.JSON(200, echo.Map{
+			"message": "success",
+		})
+	}
+}
+
+func (sms *SmsTrapHandler) DeleteAll() echo.HandlerFunc {
+
+	return func(c echo.Context) error {
+
+		err := sms.smsTrapService.DeleteAll()
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
 
 		return c.JSON(200, echo.Map{
 			"message": "success",

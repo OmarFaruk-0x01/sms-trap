@@ -1,0 +1,45 @@
+package components
+
+import "OmarFaruk-0x01/sms-trap/app/views/icons"
+import "strings"
+
+type NavigationType struct {
+	Label string
+	Icon  func() templ.Component
+	Route string
+}
+
+type NavigationProps struct {
+	ActiveRoute string
+}
+
+var routes = []*NavigationType{
+	{
+		Label: "Inbox",
+		Icon:  icons.Inbox,
+		Route: "/inbox",
+	},
+	{
+		Label: "Setting",
+		Icon:  icons.Setting,
+		Route: "/setting",
+	},
+}
+
+templ Navigation(props *NavigationProps) {
+	<div class="w-full relative h-full z-10">
+		<div class="px-5 flex py-3 mb-3 items-center justify-center">
+			<img src="/static/logo-gradient.svg" alt="logo" class="w-[140px] -left-2 relative"/>
+		</div>
+		<div class="flex flex-col">
+			for _, route := range routes {
+				<a href={ templ.SafeURL(route.Route) } class={ "w-full flex items-center gap-2 p-3 hover:bg-gray-50/30 transition text-white", templ.KV("bg-gray-50/20", strings.HasPrefix(props.ActiveRoute, route.Route) ) }>
+					<span class="w-5 h-5">
+						@route.Icon()
+					</span>
+					<span class="relative text-md -top-[1px]">{ route.Label }</span>
+				</a>
+			}
+		</div>
+	</div>
+}

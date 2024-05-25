@@ -3,6 +3,7 @@ package handlers
 import (
 	"OmarFaruk-0x01/sms-trap/app/services"
 	"OmarFaruk-0x01/sms-trap/app/views"
+	"OmarFaruk-0x01/sms-trap/app/views/layouts"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -27,11 +28,20 @@ func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
 		activeTimeFilter := c.QueryParam("time")
 
 		if activeTab == "" {
-			activeTab = "stats"
+			activeTab = "sms-list"
 		}
 
 		if activeTimeFilter == "" {
 			activeTimeFilter = "today"
+		}
+
+		if activePhone != "" {
+
+			_, err := inbox.smsTrapService.FindByPhone(activePhone)
+
+			if err != nil {
+				return c.Redirect(http.StatusFound, "/inbox")
+			}
 		}
 
 		selectedTraps, err := inbox.smsTrapService.FindAllByPhone(activePhone)
@@ -39,12 +49,15 @@ func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
 			return c.String(404, "Not Found")
 		}
 
-		return views.Render(views.Home(&views.HomeProps{
+		return views.Render(views.Inbox(&views.InboxProps{
 			Phones:           phones,
 			SelectedTraps:    selectedTraps,
 			ActivePhone:      activePhone,
 			ActiveTab:        activeTab,
 			ActiveTimeFilter: activeTimeFilter,
+			AppLayoutProps: &layouts.AppLayoutProps{
+				ActiveRoute: c.Request().URL.Path,
+			},
 		}), http.StatusOK, c)
 	}
 }

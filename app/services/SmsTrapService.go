@@ -2,7 +2,10 @@ package services
 
 import (
 	"OmarFaruk-0x01/sms-trap/app/models"
+	"OmarFaruk-0x01/sms-trap/app/utils"
 	"context"
+	"fmt"
+	"sync"
 
 	"github.com/uptrace/bun"
 )
@@ -12,11 +15,8 @@ type SmsTrapService struct {
 }
 
 func (sts *SmsTrapService) Create(trap *models.TrapDTO) error {
-	newTrap := &models.Trap{
-		Phone:   trap.Phone,
-		Message: trap.Message,
-		Type:    trap.Type,
-	}
+	newTrap := prepareTrap(trap)
+
 	_, err := sts.db.NewInsert().Model(newTrap).Exec(context.Background())
 
 	return err
@@ -24,16 +24,32 @@ func (sts *SmsTrapService) Create(trap *models.TrapDTO) error {
 
 func (sts *SmsTrapService) CreateMany(traps []*models.TrapDTO) error {
 
-	newTraps := []*models.Trap{}
+	wg := &sync.WaitGroup{}
+
+	newTraps := make(chan *models.Trap, 1)
+	preparedTraps := make([]*models.Trap, 0)
+
+	wg.Add(len(traps))
 
 	for _, trapData := range traps {
-		newTraps = append(newTraps, &models.Trap{
-			Phone:   trapData.Phone,
-			Message: trapData.Message,
-			Type:    trapData.Type,
-		})
+		go (func(wg *sync.WaitGroup, trapData *models.TrapDTO) {
+			newTrap := prepareTrap(trapData)
+			newTraps <- newTrap
+			wg.Done()
+		})(wg, trapData)
 	}
-	_, err := sts.db.NewInsert().Model(&newTraps).Exec(context.Background())
+
+	for i := 0; i < len(traps); i++ {
+		preparedTraps = append(preparedTraps, <-newTraps)
+	}
+
+	wg.Wait()
+
+	close(newTraps)
+
+	fmt.Printf("prepared traps: %v\n: %v ", preparedTraps, len(traps))
+
+	_, err := sts.db.NewInsert().Model(&preparedTraps).Exec(context.Background())
 
 	return err
 }
@@ -55,11 +71,15 @@ func (sts *SmsTrapService) FindByPhone(phone string) (*models.Trap, error) {
 
 	trap := &models.Trap{}
 
-	_, err := sts.db.NewSelect().
-		Model(trap).
+	err := sts.db.NewSelect().
+		Table("traps").
 		Where("phone = ?", phone).
 		Limit(1).
-		Exec(context.Background())
+		Scan(context.Background(), trap)
+
+	if trap.Phone == "" {
+		return nil, fmt.Errorf("not found")
+	}
 
 	return trap, err
 }
@@ -103,8 +123,46 @@ func (sts *SmsTrapService) GetPhones() ([]*models.TrapPhones, error) {
 	return traps, err
 }
 
+func (sts *SmsTrapService) Delete(trapId int64) error {
+	res, err := sts.db.NewDelete().
+		Model((*models.Trap)(nil)).
+		Where("id = ?", trapId).
+		Exec(context.Background())
+
+	deletedCount, _ := res.RowsAffected()
+
+	if deletedCount == 0 {
+		return fmt.Errorf("not found")
+	}
+
+	return err
+}
+
+func (sts *SmsTrapService) DeleteAll() error {
+	_, err := sts.db.NewDelete().
+		Table("traps").
+		Where("1 = 1").
+		Exec(context.Background())
+
+	return err
+}
+
 func NewSmsTrapService(db *bun.DB) *SmsTrapService {
 	return &SmsTrapService{
 		db,
 	}
+}
+
+func prepareTrap(trap *models.TrapDTO) *models.Trap {
+	return &models.Trap{
+		Type:            utils.DetectEncoding(trap.Message),
+		Phone:           trap.Phone,
+		Label:           trap.Label,
+		Message:         trap.Message,
+		SMSCount:        utils.GetSMSCount(trap.Message),
+		GSMCount:        utils.GetGSMCount(trap.Message),
+		UnicodeCount:    utils.GetUnicodeCount(trap.Message),
+		CharactersCount: utils.GetCharacterCount(trap.Message),
+	}
+
 }

@@ -36,6 +36,7 @@ laravel-project/
 ## Setup
 
 1. Register the `SMSServiceProvider` in `bootstrap/providers.php`:
+
 ```php
 return [
 // ...
@@ -48,6 +49,7 @@ return [
 You can use the SMS service in your application in two ways:
 
 1. Using dependency injection:
+
 ```php
 
 use App\Services\sms\SMS;
@@ -63,6 +65,7 @@ public function someMethod(SMS $smsService)
 ```
 
 2. Using the Facade:
+
 ```php
 use App\Facades\SMS;
 
@@ -75,6 +78,6 @@ $result = SMS::send([
 
 ## Notes
 
-- The SMS Trap service is configured to use `http://localhost:8080/api/v1/trap` as the base URL. Update this in `SMSTrap.php` if needed.
-- The service is registered as a singleton in the service container, meaning the same instance will be used throughout the application lifecycle.
-- The implementation handles the special case of formatting the `phones` parameter correctly in the query string.
+-   The SMS Trap service is configured to use `http://localhost:1290/api/v1/trap` as the base URL. Update this in `SMSTrap.php` if needed.
+-   The service is registered as a singleton in the service container, meaning the same instance will be used throughout the application lifecycle.
+-   The implementation handles the special case of formatting the `phones` parameter correctly in the query string.

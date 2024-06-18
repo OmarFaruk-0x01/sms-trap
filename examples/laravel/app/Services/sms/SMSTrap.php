@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class SMSTrap implements SMS
 {
-    protected string $baseUrl = 'http://localhost:8080/api/v1/trap';
+    protected string $baseUrl = 'http://localhost:1290/api/v1/trap';
 
     public function send(array $phones, string $message, array $params): mixed
     {

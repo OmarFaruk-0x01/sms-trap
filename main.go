@@ -25,7 +25,7 @@ var (
 
 func init() {
 	flag.StringVar(&dbPath, "db-path", "", "Path to the SQLite database file")
-	flag.StringVar(&port, "port", "8080", "Port to run the server on")
+	flag.StringVar(&port, "port", "1290", "Port to run the server on")
 	flag.Parse()
 }
 

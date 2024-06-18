@@ -11,9 +11,10 @@ import (
 
 type WebRouter struct {
 	router       *echo.Group
+	appConfig    *config.AppConfig
 	inboxHandler *handlers.InboxHandler
 	docsHandler  *handlers.DocsHandler
-	appConfig    *config.AppConfig
+	guideHandler *handlers.GuideHandler
 }
 
 func (web *WebRouter) Register() {
@@ -25,6 +26,7 @@ func (web *WebRouter) Register() {
 	web.router.GET("/inbox", web.inboxHandler.ShowInbox())
 	web.router.GET("/inbox/:phone", web.inboxHandler.ShowInbox())
 	web.router.GET("/docs", web.docsHandler.ShowDocs())
+	web.router.GET("/guides", web.guideHandler.ShowGuides())
 }
 
 func (web *WebRouter) RegisterMiddlewares() {
@@ -33,12 +35,12 @@ func (web *WebRouter) RegisterMiddlewares() {
 
 func NewWebRouter(prefix string, appConfig *config.AppConfig) Router {
 	group := appConfig.Echo.Group(prefix)
-	inboxHandler := handlers.NewInboxHandler(appConfig)
-	docsHanlder := handlers.NewDocsHanlder(appConfig)
+
 	return &WebRouter{
 		router:       group,
-		inboxHandler: inboxHandler,
-		docsHandler:  docsHanlder,
 		appConfig:    appConfig,
+		inboxHandler: handlers.NewInboxHandler(appConfig),
+		docsHandler:  handlers.NewDocsHanlder(appConfig),
+		guideHandler: handlers.NewGuideHandler(appConfig),
 	}
 }

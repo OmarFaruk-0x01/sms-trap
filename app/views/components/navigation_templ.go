@@ -37,7 +37,7 @@ var routes = []*NavigationType{
 	{
 		Label: "Framework Guide",
 		Icon:  icons.Box,
-		Route: "/guide",
+		Route: "/guides",
 	},
 }
 

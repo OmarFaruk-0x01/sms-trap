@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"OmarFaruk-0x01/sms-trap/app/config"
 	"OmarFaruk-0x01/sms-trap/app/models"
 	"OmarFaruk-0x01/sms-trap/app/services"
 	"OmarFaruk-0x01/sms-trap/app/websocket"
@@ -8,12 +9,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/uptrace/bun"
 )
 
 type SmsTrapHandler struct {
-	db             *bun.DB
-	hub            *websocket.Hub
+	appConfig      *config.AppConfig
 	smsTrapService *services.SmsTrapService
 }
 
@@ -71,7 +70,7 @@ func (sms *SmsTrapHandler) Trap() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
 
-		sms.hub.Broadcast(websocket.NewMessage([]byte(message), nil))
+		sms.appConfig.Hub.Broadcast(websocket.NewMessage([]byte(message), nil))
 
 		return c.JSON(200, echo.Map{
 			"message": "success",
@@ -95,12 +94,11 @@ func (sms *SmsTrapHandler) DeleteAll() echo.HandlerFunc {
 	}
 }
 
-func NewSmsTrapHandler(db *bun.DB, hub *websocket.Hub) *SmsTrapHandler {
-	smsTrapService := services.NewSmsTrapService(db)
+func NewSmsTrapHandler(appConfig *config.AppConfig) *SmsTrapHandler {
+	smsTrapService := services.NewSmsTrapService(appConfig.Db)
 
 	return &SmsTrapHandler{
-		db,
-		hub,
+		appConfig,
 		smsTrapService,
 	}
 }

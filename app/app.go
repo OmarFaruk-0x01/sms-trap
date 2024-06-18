@@ -1,19 +1,16 @@
 package app
 
 import (
+	"OmarFaruk-0x01/sms-trap/app/config"
 	"OmarFaruk-0x01/sms-trap/app/routes"
-	"OmarFaruk-0x01/sms-trap/app/websocket"
+	"fmt"
 
-	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/uptrace/bun"
 )
 
 type App struct {
-	Echo    *echo.Echo
-	Db      *bun.DB
+	*config.AppConfig
 	Routers []routes.Router
-	Hub     *websocket.Hub
 }
 
 func (app *App) StartServer() {
@@ -24,28 +21,34 @@ func (app *App) StartServer() {
 
 	app.registerRoutes()
 
-	app.Echo.Logger.Fatal(app.Echo.Start(":1323"))
+	fmt.Printf("Server is running on port %s\n", app.Port)
+
+	app.Echo.Logger.Fatal(app.Echo.Start(":" + app.Port))
+
 }
 
 func (app *App) registerMiddlewares() {
 
 	app.Echo.Use(middleware.Logger())
 	app.Echo.Use(middleware.Recover())
-	app.Echo.Pre(middleware.RemoveTrailingSlash())
 
 }
 
 func (app *App) registerRoutes() {
 	for _, route := range app.Routers {
+		route.RegisterMiddlewares()
 		route.Register()
 	}
 }
 
-func NewApp(echo *echo.Echo, db *bun.DB, routers []routes.Router, hub *websocket.Hub) *App {
+func (app *App) Shutdown() {
+	app.Echo.Close()
+	app.Db.Close()
+}
+
+func NewApp(config *config.AppConfig, routers []routes.Router) *App {
 	return &App{
-		echo,
-		db,
+		config,
 		routers,
-		hub,
 	}
 }

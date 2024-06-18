@@ -54,6 +54,7 @@ func SmsDetails(activePhone string) templ.Component {
 		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
 			Title:          "Total Characters",
 			ValueAlpineExp: "$store.smsDetails.sms?.characters_count",
+			Info:           "Total number of characters",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -61,6 +62,7 @@ func SmsDetails(activePhone string) templ.Component {
 		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
 			Title:          "Total SMS",
 			ValueAlpineExp: "$store.smsDetails.sms?.sms_count",
+			Info:           "Total number of SMS",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -68,6 +70,7 @@ func SmsDetails(activePhone string) templ.Component {
 		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
 			Title:          "GSM",
 			ValueAlpineExp: "$store.smsDetails.sms?.gsm_count",
+			Info:           "Total number of GSM characters",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -75,11 +78,12 @@ func SmsDetails(activePhone string) templ.Component {
 		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
 			Title:          "Unicode",
 			ValueAlpineExp: "$store.smsDetails.sms?.unicode_count",
+			Info:           "Total number of Unicode characters",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"p-2\" x-data=\"{nextRate: 0}\" x-init=\"$watch(&#39;$store.smsDetails.sms?.sms_count&#39;, () =&gt; {\n        nextRate = $store.smsDetails.sms?.type == &#39;Unicode&#39; ? 70 : 160\n    })\"><div class=\"flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700\"><template x-for=\"part in ($store.smsDetails.sms?.sms_count || 0)\"><div class=\"p-3 md:p-3\"><p class=\"text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500\" x-text=\"&#39;SMS &#39; + part\"></p><div class=\"flex gap-1 mt-2 flex-wrap text-sm font-light\" x-show=\"$store.smsDetails.open\" style=\"font-family: monospace\"><template x-if=\"$store.smsDetails.sms?.type == &#39;Unicode&#39;\"><template x-for=\"box in 70\"><div class=\"w-5 h-5 text-sm bg-gray-200 rounded-md flex items-center justify-center\" :class=\"{\n                            \t\t&#39;bg-primary-500 text-white&#39;: isASCII($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]),\n                            \t\t&#39;bg-red-500 text-white&#39;: isUnicode($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)])}\" x-text=\"$store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]\"></div></template></template><template x-if=\"$store.smsDetails.sms?.type == &#39;Text&#39;\"><template x-for=\"box in 160\"><div class=\"w-5 h-5 text-sm bg-gray-200 rounded-md flex items-center justify-center\" :class=\"{\n                            \t\t&#39;bg-primary-500 text-white&#39;: isASCII($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]),\n                            \t\t&#39;bg-red-500 text-white&#39;: isUnicode($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)])}\" x-text=\"$store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]\"></div></template></template></div></div></template></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"p-2\" x-data=\"{nextRate: 0}\" x-init=\"$watch(&#39;$store.smsDetails.sms?.sms_count&#39;, () =&gt; {\n        nextRate = $store.smsDetails.sms?.type == &#39;Unicode&#39; ? 70 : 160\n    })\"><div class=\"flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700\"><template x-for=\"part in ($store.smsDetails.sms?.sms_count || 0)\"><div class=\"p-3 md:p-3\"><p class=\"text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500\" x-text=\"`SMS ${part} - ${$store.smsDetails.sms?.type}: ${nextRate}`\"></p><div class=\"flex gap-1 mt-2 flex-wrap text-sm font-light\" x-show=\"$store.smsDetails.open\" style=\"font-family: monospace\"><template x-if=\"$store.smsDetails.sms?.type == &#39;Unicode&#39;\"><template x-for=\"box in 70\"><div class=\"w-5 h-5 text-sm bg-gray-200 rounded-md flex items-center justify-center\" :class=\"{\n                            \t\t&#39;bg-primary-500 text-white&#39;: isASCII($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]),\n                            \t\t&#39;bg-red-500 text-white&#39;: isUnicode($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)])}\" x-text=\"$store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]\"></div></template></template><template x-if=\"$store.smsDetails.sms?.type == &#39;Text&#39;\"><template x-for=\"box in 160\"><div class=\"w-5 h-5 text-sm bg-gray-200 rounded-md flex items-center justify-center\" :class=\"{\n                            \t\t&#39;bg-primary-500 text-white&#39;: isASCII($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]),\n                            \t\t&#39;bg-red-500 text-white&#39;: isUnicode($store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)])}\" x-text=\"$store.smsDetails.sms?.message?.[((part -1) * nextRate) + (box -1)]\"></div></template></template></div></div></template></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

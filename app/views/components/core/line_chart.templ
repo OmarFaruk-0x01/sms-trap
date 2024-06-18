@@ -1,6 +1,10 @@
 package core
 
-script LineChartScript() {
+type LineChartProps struct {
+	Id string
+}
+
+script LineChartScript(props *LineChartProps) {
 const chartConfig = {
   series: [
     {
@@ -83,32 +87,19 @@ const chartConfig = {
 };
 
 
-    if (document.getElementById("chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("chart"), chartConfig);
+console.log(props)
+    if (document.getElementById(props.Id) && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById(props.Id), chartConfig);
         chart.render();
     }
 
 }
 
-templ LineChart() {
+templ LineChart(props *LineChartProps) {
 	<div class="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 z-0">
-		// <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden rounded-none bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center">
-		// 	<div class="w-max rounded-lg bg-gray-900 p-5 text-white">
-
-		// 	</div>
-		// 	<div>
-		// 		<h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-blue-gray-900 antialiased">
-		// 			Line Chart
-		// 		</h6>
-		// 		<p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">
-		// 			Visualize your data in a simple way using the
-		// 			-tailwind/html chart plugin.
-		// 		</p>
-		// 	</div>
-		// </div>
 		<div class="px-2 pb-0">
-			<div id="chart"></div>
+			<div id={ props.Id }></div>
 		</div>
 	</div>
-	@LineChartScript()
+	@LineChartScript(props)
 }

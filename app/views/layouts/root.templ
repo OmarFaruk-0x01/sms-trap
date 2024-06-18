@@ -10,6 +10,8 @@ script ReadyNotification() {
         Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
                 console.log("Notification permission granted");
+            }else{
+                alert('Without notification permission SMS Trap can\'t able to send browser notification.')
             }
         });
     }
@@ -67,13 +69,15 @@ script ReadyWebSocket() {
 
     ws.onmessage = function(evt) {
         data = JSON.parse(evt.data)
-        console.log(data)
         if (data.trigger_notification) {
-            new Notification(`New Sms Recived From ${data?.query?.phones?.join(', ')}`, {
+            const notification = new Notification(`New Sms Recived From ${data?.query?.phones?.join(', ')}`, {
                 body: data?.query?.message,
-                icon: "https://cdn-icons-png.flaticon.com/512/6711/6711888.png",
-                onclick: function() { window.parent.focus();
-                         notification.close(); }
+            })
+            notification.addEventListener('click', (ev) => {
+                console.log(ev)
+                window.parent.parent.focus();
+                notification.close();
+                window.parent.parent.location.reload();
             })
         }
     }
@@ -87,14 +91,23 @@ templ RootLayout() {
 			<title>Sms Trap</title>
 			<link rel="stylesheet" href="/static/css/tippy.css"/>
 			<link rel="stylesheet" href="/static/css/app.css"/>
+			<link rel="stylesheet" href="/static/js/highlight/styles/nord.min.css"/>
 			<script src="/static/js/apexcharts.min.js"></script>
 			<script src="/static/js/dayjs.min.js"></script>
 			<script src="/static/js/axios.min.js"></script>
+			<script src="/static/js/highlight/highlight.min.js"></script>
+			<script src="/static/js/highlight/languages/go.min.js"></script>
+			<script src="/static/js/highlight/languages/javascript.min.js"></script>
+			<script src="/static/js/highlight/languages/php.min.js"></script>
+			<script src="/static/js/highlight/languages/python.min.js"></script>
+			<script src="/static/js/highlight/languages/ruby.min.js"></script>
+			<script src="/static/js/highlight/languages/bash.min.js"></script>
 			<script src="/static/js/relativeTime.js"></script>
 			<script src="/static/js/utils.js"></script>
 			<script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
 			<script defer src="/static/js/alpine-tooltip.min.js"></script>
 			<script defer src="/static/js/alpinejs.min.js"></script>
+			<script>hljs.highlightAll();</script>
 			<style>
                 body {
                     font-family: 'Exo 2', sans-serif;

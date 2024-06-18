@@ -1,3 +1,4 @@
+
 package components
 
 templ Header() {
@@ -13,6 +14,10 @@ templ Header() {
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
 				</svg>
 			</template>
+		</button>
+		<button x-data x-tooltip.raw="Send test sms" @click="axios.get('/api/v1/trap?message=abc&phones[]=0123456789&label=transactional').then(() => {window.location.reload();})"
+		  class="px-2 py-1 bg-primary-500 text-white font-semibold rounded text-sm hover:bg-primary-600 ">
+		  Test SMS
 		</button>
 	</header>
 	<hr/>

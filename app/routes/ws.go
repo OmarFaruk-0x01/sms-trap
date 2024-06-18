@@ -1,18 +1,17 @@
 package routes
 
 import (
+	"OmarFaruk-0x01/sms-trap/app/config"
 	"OmarFaruk-0x01/sms-trap/app/websocket"
 	"log"
 
 	gorillaWS "github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
-	"github.com/uptrace/bun"
 )
 
 type WebSocketRouter struct {
-	router *echo.Group
-	db     *bun.DB
-	hub    *websocket.Hub
+	router    *echo.Group
+	appConfig *config.AppConfig
 }
 
 var upgrader = gorillaWS.Upgrader{}
@@ -25,7 +24,7 @@ func (wsr *WebSocketRouter) Register() {
 			log.Fatal(err)
 		}
 
-		client := websocket.NewClient(wsr.hub, conn)
+		client := websocket.NewClient(wsr.appConfig.Hub, conn)
 
 		client.Register()
 
@@ -34,12 +33,15 @@ func (wsr *WebSocketRouter) Register() {
 
 }
 
-func NewWebSocketRouter(prefix string, echo *echo.Echo, db *bun.DB, hub *websocket.Hub) Router {
-	group := echo.Group(prefix)
+func (ws *WebSocketRouter) RegisterMiddlewares() {
+
+}
+
+func NewWebSocketRouter(prefix string, appConfig *config.AppConfig) Router {
+	group := appConfig.Echo.Group(prefix)
 
 	return &WebSocketRouter{
-		router: group,
-		db:     db,
-		hub:    hub,
+		router:    group,
+		appConfig: appConfig,
 	}
 }

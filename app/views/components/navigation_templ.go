@@ -30,9 +30,14 @@ var routes = []*NavigationType{
 		Route: "/inbox",
 	},
 	{
-		Label: "Setting",
-		Icon:  icons.Setting,
-		Route: "/setting",
+		Label: "Docs",
+		Icon:  icons.Api,
+		Route: "/docs",
+	},
+	{
+		Label: "Framework Guide",
+		Icon:  icons.Box,
+		Route: "/guide",
 	},
 }
 
@@ -96,7 +101,7 @@ func Navigation(props *NavigationProps) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(route.Label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/navigation.templ`, Line: 40, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/navigation.templ`, Line: 45, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {

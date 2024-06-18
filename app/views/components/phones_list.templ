@@ -27,6 +27,7 @@ script RegisterAlpineComponent(phones []*models.TrapPhones, activePhone string) 
 					axios.delete("/api/v1/traps").then((res) => {
 						this.phones = []
 						this.filterdPhones = []
+						window.location = '/inbox';
 						toast('All messages deleted')
 					}).catch((err) => {
 						toast(err.response.data.message, {type: 'danger'})
@@ -54,10 +55,11 @@ templ PhonesList(phones []*models.TrapPhones, activePhone string) {
 				<button
 					@click="window.location.reload()"
 					class="hover:text-primary-500 transition"
+					x-tooltip.raw="Refresh"
 				>
 					@icons.Retry()
 				</button>
-				<button @click="removeAll" class="hover:text-red-500 transition">
+				<button x-tooltip.raw="Delete All Messages" @click="removeAll" class="hover:text-red-500 transition">
 					@icons.Delete()
 				</button>
 			</div>
@@ -72,7 +74,7 @@ templ PhonesList(phones []*models.TrapPhones, activePhone string) {
 				<li :class="'border-b transition hover:bg-primary-50 flex justify-between items-center ' + (activePhone == phone.phone ? 'bg-primary-50' : '') ">
 					<a :href="`/inbox/${phone.phone}`" class="w-full py-5 px-3 flex justify-between items-center">
 						<h3 class="text-md font-semibold" x-text="phone.phone"></h3>
-						<p class="text-md text-gray-400" x-text="dayjs(phone.last_sms_at?.slice(0,-1)).fromNow()"></p>
+						<p class="text-md text-gray-400" x-text="dayjs(phone.last_sms_at).fromNow()"></p>
 					</a>
 				</li>
 			</template>

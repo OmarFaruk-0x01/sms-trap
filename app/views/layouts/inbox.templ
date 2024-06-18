@@ -1,0 +1,21 @@
+package layouts
+
+import "OmarFaruk-0x01/sms-trap/app/views/components"
+import "OmarFaruk-0x01/sms-trap/app/models"
+
+type InboxLayoutProps struct {
+	Phones         []*models.TrapPhones
+	ActivePhone    string
+	AppLayoutProps *AppLayoutProps
+}
+
+templ InboxLayout(props *InboxLayoutProps) {
+	@AppLayout(props.AppLayoutProps) {
+		<div class="w-full grid grid-cols-[auto_1fr] h-[calc(100vh-44px)] rounded-3xl">
+			<section class="flex flex-col pt-3 w-[350px] h-full overflow-y-scroll border-r">
+				@components.PhonesList(props.Phones, props.ActivePhone)
+			</section>
+			{ children... }
+		</div>
+	}
+}

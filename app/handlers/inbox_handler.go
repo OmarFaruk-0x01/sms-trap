@@ -1,18 +1,18 @@
 package handlers
 
 import (
+	"OmarFaruk-0x01/sms-trap/app/config"
 	"OmarFaruk-0x01/sms-trap/app/services"
 	"OmarFaruk-0x01/sms-trap/app/views"
 	"OmarFaruk-0x01/sms-trap/app/views/layouts"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/uptrace/bun"
 )
 
 type InboxHandler struct {
-	db             *bun.DB
 	smsTrapService *services.SmsTrapService
+	appConfig      *config.AppConfig
 }
 
 func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
@@ -62,11 +62,11 @@ func (inbox *InboxHandler) ShowInbox() echo.HandlerFunc {
 	}
 }
 
-func NewInboxHandler(db *bun.DB) *InboxHandler {
-	smsTrapService := services.NewSmsTrapService(db)
+func NewInboxHandler(appConfig *config.AppConfig) *InboxHandler {
+	smsTrapService := services.NewSmsTrapService(appConfig.Db)
 
 	return &InboxHandler{
-		db,
 		smsTrapService,
+		appConfig,
 	}
 }

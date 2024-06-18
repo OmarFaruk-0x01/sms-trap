@@ -17,8 +17,8 @@ import (
 
 func RegisterAlpineComponent(phones []*models.TrapPhones, activePhone string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_RegisterAlpineComponent_d353`,
-		Function: `function __templ_RegisterAlpineComponent_d353(phones, activePhone){document.addEventListener("alpine:init", () => {
+		Name: `__templ_RegisterAlpineComponent_5c1f`,
+		Function: `function __templ_RegisterAlpineComponent_5c1f(phones, activePhone){document.addEventListener("alpine:init", () => {
 		Alpine.data('phonesList', () => ({
 			phones,
 			filterdPhones: phones,
@@ -39,6 +39,7 @@ func RegisterAlpineComponent(phones []*models.TrapPhones, activePhone string) te
 					axios.delete("/api/v1/traps").then((res) => {
 						this.phones = []
 						this.filterdPhones = []
+						window.location = '/inbox';
 						toast('All messages deleted')
 					}).catch((err) => {
 						toast(err.response.data.message, {type: 'danger'})
@@ -49,8 +50,8 @@ func RegisterAlpineComponent(phones []*models.TrapPhones, activePhone string) te
 	})
 
 }`,
-		Call:       templ.SafeScript(`__templ_RegisterAlpineComponent_d353`, phones, activePhone),
-		CallInline: templ.SafeScriptInline(`__templ_RegisterAlpineComponent_d353`, phones, activePhone),
+		Call:       templ.SafeScript(`__templ_RegisterAlpineComponent_5c1f`, phones, activePhone),
+		CallInline: templ.SafeScriptInline(`__templ_RegisterAlpineComponent_5c1f`, phones, activePhone),
 	}
 }
 
@@ -71,7 +72,7 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"phonesList\"><div class=\"flex px-3 gap-2\"><label class=\"w-full\"><input id=\"search-input\" x-model.debounce.300ms=\"search\" class=\"rounded-lg p-2 px-4 border border-gray-300  transition duration-200 focus:outline-none focus:ring-2 ring-primary-400 w-full\" placeholder=\"Search...\"></label><div class=\"flex items-center gap-3\"><button @click=\"window.location.reload()\" class=\"hover:text-primary-500 transition\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div x-data=\"phonesList\"><div class=\"flex px-3 gap-2\"><label class=\"w-full\"><input id=\"search-input\" x-model.debounce.300ms=\"search\" class=\"rounded-lg p-2 px-4 border border-gray-300  transition duration-200 focus:outline-none focus:ring-2 ring-primary-400 w-full\" placeholder=\"Search...\"></label><div class=\"flex items-center gap-3\"><button @click=\"window.location.reload()\" class=\"hover:text-primary-500 transition\" x-tooltip.raw=\"Refresh\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -79,7 +80,7 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <button @click=\"removeAll\" class=\"hover:text-red-500 transition\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <button x-tooltip.raw=\"Delete All Messages\" @click=\"removeAll\" class=\"hover:text-red-500 transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -87,7 +88,7 @@ func PhonesList(phones []*models.TrapPhones, activePhone string) templ.Component
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></div></div><ul class=\"mt-6\" id=\"phone-list\"><template x-if=\"!filterdPhones.length\"><li class=\"py-5 px-3 flex justify-between items-center\"><h3 class=\"text-md text-center text-gray-400 font-regular w-full\">No phone found</h3></li></template><template x-for=\"phone in filterdPhones\"><li :class=\"&#39;border-b transition hover:bg-primary-50 flex justify-between items-center &#39; + (activePhone == phone.phone ? &#39;bg-primary-50&#39; : &#39;&#39;) \"><a :href=\"`/inbox/${phone.phone}`\" class=\"w-full py-5 px-3 flex justify-between items-center\"><h3 class=\"text-md font-semibold\" x-text=\"phone.phone\"></h3><p class=\"text-md text-gray-400\" x-text=\"dayjs(phone.last_sms_at?.slice(0,-1)).fromNow()\"></p></a></li></template></ul></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></div></div><ul class=\"mt-6\" id=\"phone-list\"><template x-if=\"!filterdPhones.length\"><li class=\"py-5 px-3 flex justify-between items-center\"><h3 class=\"text-md text-center text-gray-400 font-regular w-full\">No phone found</h3></li></template><template x-for=\"phone in filterdPhones\"><li :class=\"&#39;border-b transition hover:bg-primary-50 flex justify-between items-center &#39; + (activePhone == phone.phone ? &#39;bg-primary-50&#39; : &#39;&#39;) \"><a :href=\"`/inbox/${phone.phone}`\" class=\"w-full py-5 px-3 flex justify-between items-center\"><h3 class=\"text-md font-semibold\" x-text=\"phone.phone\"></h3><p class=\"text-md text-gray-400\" x-text=\"dayjs(phone.last_sms_at).fromNow()\"></p></a></li></template></ul></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

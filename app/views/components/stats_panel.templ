@@ -38,7 +38,7 @@ type StatsPanelProps struct {
 }
 
 templ StatsPanel(props *StatsPanelProps) {
-	<div class="w-full">
+	<div class="w-full p-4">
 		<script>
             function onSelectChange(event){
                 const searchParams = new URLSearchParams(window.location.search);
@@ -56,11 +56,44 @@ templ StatsPanel(props *StatsPanelProps) {
 				Id:    "stats-select",
 			})
 		</section>
-		@core.LineChart()
-		<section class="grid grid-cols-3 gap-4">
-			// @core.StatsCard("Total SMS Sent", "1000")
-			// @core.StatsCard("Total SMS", "1000")
-			// @core.StatsCard("Total SMS", "1000")
+		<section>
+			<div class="grid grid-cols-2 gap-2 mb-2">
+				@core.StatsCard(&core.StatsCardProps{
+					Title: "Transactional",
+					Value: "200",
+					Info:  "Total number of transactional SMS",
+				})
+				@core.StatsCard(&core.StatsCardProps{
+					Title: "Promotional",
+					Value: "500",
+					Info:  "Total number of proporational SMS",
+				})
+			</div>
+			<div>
+				@core.LineChart(&core.LineChartProps{
+					Id: "total-sms",
+				})
+			</div>
+		</section>
+		<section>
+			<h2 class="text-lg font-semibold my-4">Top Senders</h2>
+			<div class="grid grid-cols-2 gap-2 mb-2">
+				@core.StatsCard(&core.StatsCardProps{
+					Title: "Transactional",
+					Value: "200",
+					Info:  "Total number of transactional SMS",
+				})
+				@core.StatsCard(&core.StatsCardProps{
+					Title: "Promotional",
+					Value: "500",
+					Info:  "Total number of proporational SMS",
+				})
+			</div>
+			<div>
+				@core.BarChart(&core.BarChartProps{
+					Id: "top-senders",
+				})
+			</div>
 		</section>
 	</div>
 }

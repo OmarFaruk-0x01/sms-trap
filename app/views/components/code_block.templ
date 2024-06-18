@@ -1,0 +1,20 @@
+package components
+
+import "fmt"
+import "OmarFaruk-0x01/sms-trap/app/views/icons"
+
+templ CodeBlock(code string, language string) {
+	<pre class="group relative bg-gray-50 border border-gray-100 rounded-md overflow-x-auto">
+		<code class={ fmt.Sprintf("language-%s", language) }>
+			{ code }
+		</code>
+		<button
+			class="group-hover:visible group-hover:opacity-100 opacity-0 invisible active:scale-95 transition hover:text-primary-500 absolute top-5 right-5 rounded transition-all duration-300 bg-white border border-gray-100 p-2"
+			x-tooltip.raw="Copy to clipboard"
+			@click.stop="navigator.clipboard.writeText($el.dataset.message);toast('Copied to clipboard')"
+			data-message={ code }
+		>
+			@icons.Clipboard()
+		</button>
+	</pre>
+}

@@ -9,7 +9,7 @@ import (
 )
 
 // dns will be pass through parameters
-func NewDB() (db *bun.DB, err error) {
+func NewMySqlDB() (db *bun.DB, err error) {
 
 	sqldb, err := sql.Open("mysql", "root:@/sms-trap")
 

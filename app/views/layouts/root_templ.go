@@ -14,20 +14,22 @@ import "OmarFaruk-0x01/sms-trap/app/views/components/core"
 
 func ReadyNotification() templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_ReadyNotification_319a`,
-		Function: `function __templ_ReadyNotification_319a(){if (!("Notification" in window)) {
+		Name: `__templ_ReadyNotification_2e0b`,
+		Function: `function __templ_ReadyNotification_2e0b(){if (!("Notification" in window)) {
         // Check if the browser supports notifications
         alert("This browser does not support desktop notification");
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
                 console.log("Notification permission granted");
+            }else{
+                alert('Without notification permission SMS Trap can\'t able to send browser notification.')
             }
         });
     }
 }`,
-		Call:       templ.SafeScript(`__templ_ReadyNotification_319a`),
-		CallInline: templ.SafeScriptInline(`__templ_ReadyNotification_319a`),
+		Call:       templ.SafeScript(`__templ_ReadyNotification_2e0b`),
+		CallInline: templ.SafeScriptInline(`__templ_ReadyNotification_2e0b`),
 	}
 }
 
@@ -72,8 +74,8 @@ func RegisterAlpineStore() templ.ComponentScript {
 
 func ReadyWebSocket() templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_ReadyWebSocket_fdcb`,
-		Function: `function __templ_ReadyWebSocket_fdcb(){var loc = window.location;
+		Name: `__templ_ReadyWebSocket_21b1`,
+		Function: `function __templ_ReadyWebSocket_21b1(){var loc = window.location;
     var uri = 'ws:';
 
     if (loc.protocol === 'https:') {
@@ -90,19 +92,21 @@ func ReadyWebSocket() templ.ComponentScript {
 
     ws.onmessage = function(evt) {
         data = JSON.parse(evt.data)
-        console.log(data)
         if (data.trigger_notification) {
-            new Notification(` + "`" + `New Sms Recived From ${data?.query?.phones?.join(', ')}` + "`" + `, {
+            const notification = new Notification(` + "`" + `New Sms Recived From ${data?.query?.phones?.join(', ')}` + "`" + `, {
                 body: data?.query?.message,
-                icon: "https://cdn-icons-png.flaticon.com/512/6711/6711888.png",
-                onclick: function() { window.parent.focus();
-                         notification.close(); }
+            })
+            notification.addEventListener('click', (ev) => {
+                console.log(ev)
+                window.parent.parent.focus();
+                notification.close();
+                window.parent.parent.location.reload();
             })
         }
     }
 }`,
-		Call:       templ.SafeScript(`__templ_ReadyWebSocket_fdcb`),
-		CallInline: templ.SafeScriptInline(`__templ_ReadyWebSocket_fdcb`),
+		Call:       templ.SafeScript(`__templ_ReadyWebSocket_21b1`),
+		CallInline: templ.SafeScriptInline(`__templ_ReadyWebSocket_21b1`),
 	}
 }
 
@@ -119,7 +123,7 @@ func RootLayout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/css/tippy.css\"><link rel=\"stylesheet\" href=\"/static/css/app.css\"><script src=\"/static/js/apexcharts.min.js\"></script><script src=\"/static/js/dayjs.min.js\"></script><script src=\"/static/js/axios.min.js\"></script><script src=\"/static/js/relativeTime.js\"></script><script src=\"/static/js/utils.js\"></script><script>dayjs.extend(window.dayjs_plugin_relativeTime)</script><script defer src=\"/static/js/alpine-tooltip.min.js\"></script><script defer src=\"/static/js/alpinejs.min.js\"></script><style>\n                body {\n                    font-family: 'Exo 2', sans-serif;\n                }\n\n                [x-cloak] {\n                    display: none;\n                }\n            </style>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Sms Trap</title><link rel=\"stylesheet\" href=\"/static/css/tippy.css\"><link rel=\"stylesheet\" href=\"/static/css/app.css\"><link rel=\"stylesheet\" href=\"/static/js/highlight/styles/nord.min.css\"><script src=\"/static/js/apexcharts.min.js\"></script><script src=\"/static/js/dayjs.min.js\"></script><script src=\"/static/js/axios.min.js\"></script><script src=\"/static/js/highlight/highlight.min.js\"></script><script src=\"/static/js/highlight/languages/go.min.js\"></script><script src=\"/static/js/highlight/languages/javascript.min.js\"></script><script src=\"/static/js/highlight/languages/php.min.js\"></script><script src=\"/static/js/highlight/languages/python.min.js\"></script><script src=\"/static/js/highlight/languages/ruby.min.js\"></script><script src=\"/static/js/highlight/languages/bash.min.js\"></script><script src=\"/static/js/relativeTime.js\"></script><script src=\"/static/js/utils.js\"></script><script>dayjs.extend(window.dayjs_plugin_relativeTime)</script><script defer src=\"/static/js/alpine-tooltip.min.js\"></script><script defer src=\"/static/js/alpinejs.min.js\"></script><script>hljs.highlightAll();</script><style>\n                body {\n                    font-family: 'Exo 2', sans-serif;\n                }\n\n                [x-cloak] {\n                    display: none;\n                }\n            </style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

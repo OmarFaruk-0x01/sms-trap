@@ -60,7 +60,7 @@ func StatsPanel(props *StatsPanelProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full\"><script>\n            function onSelectChange(event){\n                const searchParams = new URLSearchParams(window.location.search);\n                searchParams.set(\"time\", event.detail.value);\n                window.location.search = searchParams.toString();\n            }\n        </script><section class=\"p-2 flex items-center justify-between gap-2 z-20 relative\" x-data @stats-select-change=\"onSelectChange\"><h2 class=\"text-lg font-semibold\">Traped ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-4\"><script>\n            function onSelectChange(event){\n                const searchParams = new URLSearchParams(window.location.search);\n                searchParams.set(\"time\", event.detail.value);\n                window.location.search = searchParams.toString();\n            }\n        </script><section class=\"p-2 flex items-center justify-between gap-2 z-20 relative\" x-data @stats-select-change=\"onSelectChange\"><h2 class=\"text-lg font-semibold\">Traped ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -85,15 +85,67 @@ func StatsPanel(props *StatsPanelProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section><section><div class=\"grid grid-cols-2 gap-2 mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = core.LineChart().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
+			Title: "Transactional",
+			Value: "200",
+			Info:  "Total number of transactional SMS",
+		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section class=\"grid grid-cols-3 gap-4\"></section></div>")
+		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
+			Title: "Promotional",
+			Value: "500",
+			Info:  "Total number of proporational SMS",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = core.LineChart(&core.LineChartProps{
+			Id: "total-sms",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></section><section><h2 class=\"text-lg font-semibold my-4\">Top Senders</h2><div class=\"grid grid-cols-2 gap-2 mb-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
+			Title: "Transactional",
+			Value: "200",
+			Info:  "Total number of transactional SMS",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = core.StatsCard(&core.StatsCardProps{
+			Title: "Promotional",
+			Value: "500",
+			Info:  "Total number of proporational SMS",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = core.BarChart(&core.BarChartProps{
+			Id: "top-senders",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></section></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

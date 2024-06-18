@@ -1,17 +1,60 @@
 package core
 
 type TabsProps struct {
-	ActiveTab string
-	TabItems  []*TabItemProps
+	ActiveTab    string
+	TabItems     []*TabItemProps
+	WithBorder   bool
+	WithOverflow bool
 }
 
+// templ Tabs(props *TabsProps) {
+// 	<div class="sticky top-[61px] border-b border-gray-200px z-40 bg-white">
+// 		<ul class=" flex flex-wrap  text-sm font-medium text-center text-gray-500 dark:text-gray-400 z-40">
+// 			for _, tabItem := range props.TabItems {
+// 				@TabItem(tabItem)
+// 			}
+// 		</ul>
+// 	</div>
+// 	{ children... }
+// }
 templ Tabs(props *TabsProps) {
-	<div class="sticky top-[61px] border-b border-gray-200px z-40 bg-white">
-		<ul class=" flex flex-wrap  text-sm font-medium text-center text-gray-500 dark:text-gray-400 z-40">
-			for _, tabItem := range props.TabItems {
-				@TabItem(tabItem)
+	<div
+		x-data="{
+tabSelected: $el.dataset.activeTab ? $el.dataset.activeTab : $refs.tabButtons.firstElementChild.id,
+tabId: $id('tabs'),
+tabButtonClicked(tabButton){
+this.tabSelected = tabButton.id;
+this.tabRepositionMarker(tabButton);
+},
+tabRepositionMarker(tabButton){
+this.$refs.tabMarker.style.width=tabButton.offsetWidth + 'px';
+this.$refs.tabMarker.style.height=tabButton.offsetHeight + 'px';
+this.$refs.tabMarker.style.left=tabButton.offsetLeft + 'px';
+},
+tabContentActive(tabContent){
+return this.tabSelected == tabContent.id;
+},
+tabButtonActive(tabContent){
+const tabId = tabContent.id;
+return this.tabSelected == tabId;
+}
+}"
+		data-active-tab={ props.ActiveTab }
+		x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);"
+		class={ "relative w-full", templ.KV("max-h-[calc(100dvh-(44px+61px))]", props.WithOverflow) }
+	>
+		<div x-ref="tabButtons" class={ "sticky top-0 inline-flex items-center justify-center w-full h-12 p-2 text-gray-500 bg-white rounded-lg select-none", templ.KV("border border-gray-100", props.WithBorder) }>
+			for _ , tab := range props.TabItems {
+				@TabItem(tab)
 			}
-		</ul>
+			<div x-ref="tabMarker" class="absolute left-0 z-10 w-1/2 h-full duration-300 ease-out" x-cloak><div class="w-full h-full bg-primary-50 rounded-md shadow-sm"></div></div>
+		</div>
+		<div class={ "w-full bg-gray-50", templ.KV("max-h-[calc(100dvh-(44px+61px+48px))]", props.WithOverflow) }>
+			for _ , tab := range props.TabItems {
+				<div id={ tab.Id } x-show="tabContentActive($el)" class="relative w-full">
+					@tab.Panel()
+				</div>
+			}
+		</div>
 	</div>
-	{ children... }
 }

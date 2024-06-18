@@ -10,10 +10,14 @@ import "context"
 import "io"
 import "bytes"
 
-func LineChartScript() templ.ComponentScript {
+type LineChartProps struct {
+	Id string
+}
+
+func LineChartScript(props *LineChartProps) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_LineChartScript_fcfc`,
-		Function: `function __templ_LineChartScript_fcfc(){const chartConfig = {
+		Name: `__templ_LineChartScript_80b7`,
+		Function: `function __templ_LineChartScript_80b7(props){const chartConfig = {
   series: [
     {
       name: "Transactional",
@@ -95,18 +99,19 @@ func LineChartScript() templ.ComponentScript {
 };
 
 
-    if (document.getElementById("chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("chart"), chartConfig);
+console.log(props)
+    if (document.getElementById(props.Id) && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById(props.Id), chartConfig);
         chart.render();
     }
 
 }`,
-		Call:       templ.SafeScript(`__templ_LineChartScript_fcfc`),
-		CallInline: templ.SafeScriptInline(`__templ_LineChartScript_fcfc`),
+		Call:       templ.SafeScript(`__templ_LineChartScript_80b7`, props),
+		CallInline: templ.SafeScriptInline(`__templ_LineChartScript_80b7`, props),
 	}
 }
 
-func LineChart() templ.Component {
+func LineChart(props *LineChartProps) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -119,11 +124,24 @@ func LineChart() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 z-0\"><div class=\"px-2 pb-0\"><div id=\"chart\"></div></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 z-0\"><div class=\"px-2 pb-0\"><div id=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = LineChartScript().Render(ctx, templ_7745c5c3_Buffer)
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(props.Id)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/components/core/line_chart.templ`, Line: 101, Col: 21}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = LineChartScript(props).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

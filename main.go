@@ -2,67 +2,74 @@ package main
 
 import (
 	"OmarFaruk-0x01/sms-trap/app"
+	"OmarFaruk-0x01/sms-trap/app/config"
 	"OmarFaruk-0x01/sms-trap/app/database"
 	"OmarFaruk-0x01/sms-trap/app/database/migration"
 	"OmarFaruk-0x01/sms-trap/app/routes"
 	"OmarFaruk-0x01/sms-trap/app/websocket"
+	"flag"
+	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 	"github.com/uptrace/bun"
 )
 
+var (
+	dbPath string
+	port   string
+)
+
+func init() {
+	flag.StringVar(&dbPath, "db-path", "", "Path to the SQLite database file")
+	flag.StringVar(&port, "port", "8080", "Port to run the server on")
+	flag.Parse()
+}
+
 func main() {
 
-	if len(os.Args) < 2 {
-		panic("Not enough arguments. commands: \n'migrate:up', \n'migrate:down', \n'migrate:reset', \n'serve'")
-	}
-
-	db, err := database.NewDB()
+	db, tempFile, err := database.NewSqliteDB(dbPath)
 
 	if err != nil {
 		panic(err)
 	}
 
-	echo := echo.New()
-
-	echo.Validator = app.NewAppValidator()
-
-	hub := websocket.NewHub()
-
-	routers := []routes.Router{
-		routes.NewWebRouter("", echo, db),
-		routes.NewApiRouter("/api/v1", echo, db, hub),
-		routes.NewWebSocketRouter("/ws/", echo, db, hub),
+	if tempFile != "" {
+		defer os.Remove(tempFile)
 	}
 
-	app := app.NewApp(echo, db, routers, hub)
+	runMigration(db, "up")
+
+	echo := echo.New()
+	echo.Validator = app.NewAppValidator()
+	hub := websocket.NewHub()
+
+	appConfig := config.NewAppConfig(echo, db, hub, port)
+
+	routers := []routes.Router{
+		routes.NewWebRouter("", appConfig),
+		routes.NewApiRouter("/api/v1", appConfig),
+		routes.NewWebSocketRouter("/ws/", appConfig),
+	}
+
+	app := app.NewApp(appConfig, routers)
 
 	go hub.Run()
 
-	runCommand(app, os.Args[1])
-}
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
-func runCommand(app *app.App, command string) {
-	switch command {
+	go func() {
+		<-c
+		fmt.Printf("Shutting down...\n")
+		app.Shutdown()
+		os.Exit(0)
+	}()
 
-	case "migrate:up":
-		runMigration(app.Db, "up")
-
-	case "migrate:down":
-		runMigration(app.Db, "down")
-
-	case "migrate:reset":
-		runMigration(app.Db, "down")
-		runMigration(app.Db, "up")
-
-	case "serve":
-		app.StartServer()
-
-	default:
-		panic("Not enough arguments. commands: \n'migrate:up', \n'migrate:down', \n'migrate:reset', \n'serve'")
-	}
+	app.StartServer()
 }
 
 func runMigration(db *bun.DB, command string) {

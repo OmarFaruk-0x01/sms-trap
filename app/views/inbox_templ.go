@@ -46,25 +46,13 @@ func Inbox(props *InboxProps) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full grid grid-cols-[auto_1fr] h-[calc(100vh-40px)] rounded-3xl\"><section class=\"flex flex-col pt-3 w-[350px] h-full overflow-y-scroll border-r\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = components.PhonesList(props.Phones, props.ActivePhone).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 			if props.ActivePhone == "" {
 				templ_7745c5c3_Err = components.BlankView("Please select a phone number to see details").Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <section class=\"relaw-full h-full overflow-y-scroll\"><div class=\"sticky top-0 bg-white flex flex-col justify-between items-start z-50\"><div class=\"p-4 flex  items-center\"><div class=\"flex items-center gap-2\"><div class=\"w-5 h-5 stroke-primary-500\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <section class=\"relative w-full h-full overflow-y-scroll\"><div class=\"sticky top-0 bg-white flex flex-col justify-between items-start z-50\"><div class=\"p-4 flex  items-center\"><div class=\"flex items-center gap-2\"><div class=\"w-5 h-5 stroke-primary-500\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -79,7 +67,7 @@ func Inbox(props *InboxProps) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(props.ActivePhone)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/inbox.templ`, Line: 38, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `app/views/inbox.templ`, Line: 39, Col: 60}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -95,40 +83,7 @@ func Inbox(props *InboxProps) templ.Component {
 						templ_7745c5c3_Buffer = templ.GetBuffer()
 						defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full bg-gray-50 min-h-[calc(100dvh-(78px+61px+54px))]\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					if props.ActiveTab == "sms-list" {
-						templ_7745c5c3_Err = components.SmsPanel(&components.SmsPanelProps{
-							ActivePhone:   props.ActivePhone,
-							SelectedTraps: props.SelectedTraps,
-						}).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					}
-					if props.ActiveTab == "stats" {
-						templ_7745c5c3_Err = components.StatsPanel(&components.StatsPanelProps{
-							ActiveTimeFilter: props.ActiveTimeFilter,
-						}).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					}
-					if props.ActiveTab == "costs" {
-						templ_7745c5c3_Err = components.CostsPanel().Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					}
-					if props.ActiveTab == "concern" {
-						templ_7745c5c3_Err = components.ConcernPanel().Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("              ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -145,25 +100,17 @@ func Inbox(props *InboxProps) templ.Component {
 							ActiveTab: props.ActiveTab,
 							Icon:      icons.Message,
 							Label:     "SMS",
+							Panel: func() templ.Component {
+								return components.SmsPanel(&components.SmsPanelProps{
+									ActivePhone:   props.ActivePhone,
+									SelectedTraps: props.SelectedTraps,
+								})
+							},
 						},
-						&core.TabItemProps{
-							Id:        "stats",
-							ActiveTab: props.ActiveTab,
-							Icon:      icons.Stats,
-							Label:     "Stats",
-						},
-						&core.TabItemProps{
-							Id:        "costs",
-							ActiveTab: props.ActiveTab,
-							Icon:      icons.Costs,
-							Label:     "Costs",
-						},
-						&core.TabItemProps{
-							Id:        "concern",
-							ActiveTab: props.ActiveTab,
-							Icon:      icons.Concern,
-							Label:     "Conren",
-						},
+						// TODO: Add more tabs for
+						// Getting Stats
+						// Checking Rules
+						// Calculating Costs
 					},
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
@@ -174,16 +121,18 @@ func Inbox(props *InboxProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 			if !templ_7745c5c3_IsBuffer {
 				_, templ_7745c5c3_Err = io.Copy(templ_7745c5c3_W, templ_7745c5c3_Buffer)
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = layouts.AppLayout(props.AppLayoutProps).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.InboxLayout(&layouts.InboxLayoutProps{
+			ActivePhone: props.ActivePhone,
+			Phones:      props.Phones,
+			AppLayoutProps: &layouts.AppLayoutProps{
+				ActiveRoute: props.ActiveRoute,
+			},
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

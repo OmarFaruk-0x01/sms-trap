@@ -1,31 +1,38 @@
 package core
 
-import "fmt"
-
 type TabItemProps struct {
 	Id        string
 	ActiveTab string
 	Icon      func() templ.Component
 	Label     string
+	Panel     func() templ.Component
 }
 
 var getTabClass = func(activeTab string, currentTab string) string {
-	isActiveClass := "inline-flex w-full gap-2 items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-primary-300 group"
+	inActiveClass := ""
 
-	activeClass := "inline-flex w-full gap-2 items-center justify-center p-4 text-primary-600 border-b-2 border-primary-500 rounded-t-lg active group"
+	activeClass := ""
 
 	if activeTab == currentTab {
 		return activeClass
 	}
 
-	return isActiveClass
+	return inActiveClass
 }
 
+// templ TabItem(props *TabItemProps) {
+// 	<li class="me-2 flex-1">
+// 		<a href={ templ.SafeURL(fmt.Sprintf("?tab=%s", props.Id)) } class={ getTabClass(props.ActiveTab, props.Id) }>
+// 			@props.Icon()
+// 			<span>{ props.Label }</span>
+// 		</a>
+// 	</li>
+// }
 templ TabItem(props *TabItemProps) {
-	<li class="me-2 flex-1">
-		<a href={ templ.SafeURL(fmt.Sprintf("?tab=%s", props.Id)) } class={ getTabClass(props.ActiveTab, props.Id) }>
+	<button id={ props.Id } @click="tabButtonClicked($el);" type="button" :class="{ 'inline-flex w-full gap-2 items-center justify-center p-4 text-primary-600 border-b-2 border-primary-500 rounded-t-lg active group' : tabButtonActive($el), 'inline-flex w-full gap-2 items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-primary-300 group': !tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">
+		if props.Icon() != nil {
 			@props.Icon()
-			<span>{ props.Label }</span>
-		</a>
-	</li>
+		}
+		<span>{ props.Label }</span>
+	</button>
 }

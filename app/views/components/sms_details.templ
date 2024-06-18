@@ -25,18 +25,22 @@ templ SmsDetails(activePhone string) {
 		@core.StatsCard(&core.StatsCardProps{
 			Title:          "Total Characters",
 			ValueAlpineExp: "$store.smsDetails.sms?.characters_count",
+			Info:           "Total number of characters",
 		})
 		@core.StatsCard(&core.StatsCardProps{
 			Title:          "Total SMS",
 			ValueAlpineExp: "$store.smsDetails.sms?.sms_count",
+			Info:           "Total number of SMS",
 		})
 		@core.StatsCard(&core.StatsCardProps{
 			Title:          "GSM",
 			ValueAlpineExp: "$store.smsDetails.sms?.gsm_count",
+			Info:           "Total number of GSM characters",
 		})
 		@core.StatsCard(&core.StatsCardProps{
 			Title:          "Unicode",
 			ValueAlpineExp: "$store.smsDetails.sms?.unicode_count",
+			Info:           "Total number of Unicode characters",
 		})
 	</div>
 	<div
@@ -49,7 +53,7 @@ templ SmsDetails(activePhone string) {
 		<div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
 			<template x-for="part in ($store.smsDetails.sms?.sms_count || 0)">
 				<div class="p-3 md:p-3">
-					<p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500" x-text="'SMS ' + part"></p>
+					<p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500" x-text="`SMS ${part} - ${$store.smsDetails.sms?.type}: ${nextRate}`"></p>
 					<div class="flex gap-1 mt-2 flex-wrap text-sm font-light" x-show="$store.smsDetails.open" style="font-family: monospace">
 						<template x-if="$store.smsDetails.sms?.type == 'Unicode'">
 							<template x-for="box in 70">

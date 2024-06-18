@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SMS Trap Form</title>
+        <link rel="stylesheet" href="{% static 'nice-form.css' %}">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .form-container {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                margin: 0px auto;
+                width: 600px;
+            }
+
+            .form-container h1 {
+                text-align: center;
+                margin-bottom: 20px;
+                font-weight: 500;
+
+            }
+
+            .form-container form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-container form button {
+                background-color: #007BFF;
+                color: #ffffff;
+                border: none;
+                cursor: pointer;
+                padding: 10px 15px;
+                border-radius: 5px;
+                margin-top: 15px;
+            }
+
+            .form-container form button:hover {
+                background-color: #0056b3;
+            }
+
+            .form-container input {
+                width: 100% !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="form-container">
+            <h1>SMS Trap Example</h1>
+            <form method="post" action="{% url 'submit_form' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="nice-form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+                {% endfor %}
+                <button class="" type="submit">Submit</button>
+            </form>
+        </div>
+    </body>
+
+</html>

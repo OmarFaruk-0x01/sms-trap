@@ -7,14 +7,17 @@ import (
 	"OmarFaruk-0x01/sms-trap/app/database/migration"
 	"OmarFaruk-0x01/sms-trap/app/routes"
 	"OmarFaruk-0x01/sms-trap/app/websocket"
+	"embed"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/uptrace/bun"
 )
 
@@ -22,6 +25,9 @@ var (
 	dbPath string
 	port   string
 )
+
+//go:embed public
+var publicAssets embed.FS
 
 func init() {
 	flag.StringVar(&dbPath, "db-path", "", "Path to the SQLite database file")
@@ -45,6 +51,12 @@ func main() {
 
 	echo := echo.New()
 	echo.Validator = app.NewAppValidator()
+
+	echo.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:       "public",
+		Filesystem: http.FS(publicAssets),
+	}))
+
 	hub := websocket.NewHub()
 
 	appConfig := config.NewAppConfig(echo, db, hub, port)

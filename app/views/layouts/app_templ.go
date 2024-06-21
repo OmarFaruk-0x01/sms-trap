@@ -35,7 +35,7 @@ func AppLayout(props *AppLayoutProps) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"w-full grid grid-cols-[auto_1fr] h-screen relative\"><section x-data :style=\"{ width: $store.navbar.on ? &#39;200px&#39; : &#39;0&#39; }\" class=\"flex relative flex-col  w-[200px] transition-all duration-300 h-full overflow-y-auto border-r bg-primary-950\"><div class=\"absolute inset-0 bg-[url(&#39;/static/grid.svg&#39;)] z-0\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"w-full grid grid-cols-[auto_1fr] h-screen relative\"><section x-data :style=\"{ width: $store.navbar.on ? &#39;200px&#39; : &#39;0&#39; }\" class=\"flex relative flex-col  w-[200px] transition-all duration-300 h-full overflow-y-auto border-r bg-primary-950\"><div class=\"absolute inset-0 bg-[url(&#39;/grid.svg&#39;)] z-0\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

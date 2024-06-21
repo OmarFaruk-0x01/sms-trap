@@ -10,7 +10,7 @@ templ AppLayout(props *AppLayoutProps) {
 	@RootLayout() {
 		<main class="w-full grid grid-cols-[auto_1fr] h-screen relative">
 			<section x-data :style="{ width: $store.navbar.on ? '200px' : '0' }" class="flex relative flex-col  w-[200px] transition-all duration-300 h-full overflow-y-auto border-r bg-primary-950">
-				<div class="absolute inset-0 bg-[url('/static/grid.svg')] z-0"></div>
+				<div class="absolute inset-0 bg-[url('/grid.svg')] z-0"></div>
 				@components.Navigation(&components.NavigationProps{
 					ActiveRoute: props.ActiveRoute,
 				})

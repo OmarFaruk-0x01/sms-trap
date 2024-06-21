@@ -15,8 +15,6 @@ type App struct {
 
 func (app *App) StartServer() {
 
-	app.Echo.Static("/static/*", "public")
-
 	app.registerMiddlewares()
 
 	app.registerRoutes()

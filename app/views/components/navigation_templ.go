@@ -54,7 +54,7 @@ func Navigation(props *NavigationProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full relative h-full z-10\"><div class=\"px-5 flex py-3 mb-3 items-center justify-center\"><img src=\"/static/logo-gradient.svg\" alt=\"logo\" class=\"w-[140px] -left-2 relative\"></div><div class=\"flex flex-col\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full relative h-full z-10\"><div class=\"px-5 flex py-3 mb-3 items-center justify-center\"><img src=\"/logo-gradient.svg\" alt=\"logo\" class=\"w-[140px] -left-2 relative\"></div><div class=\"flex flex-col\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

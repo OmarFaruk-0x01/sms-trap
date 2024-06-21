@@ -24,10 +24,14 @@ jobs:
           node-version: 20
 
       - name: Install npm dependencies
-        run: npm install --frozen-lockfile
+        run: |
+          npm i -g yarn
+          yarn install --frozen-lockfile
 
       - name: Build
-        run: go mod tidy; make generate; make build_css
+        run: |
+          go mod tidy
+          make build_css
 
       - name: Install GoReleaser
         env:

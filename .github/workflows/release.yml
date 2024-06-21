@@ -19,6 +19,8 @@ jobs:
           go-version: 1.18
 
       - name: Install GoReleaser
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl -sL https://git.io/goreleaser | bash
 

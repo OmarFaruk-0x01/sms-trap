@@ -18,6 +18,17 @@ jobs:
         with:
           go-version: 1.22
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Install npm dependencies
+        run: npm install --frozen-lockfile
+
+      - name: Build
+        run: go mod tidy; make generate; make build_css
+
       - name: Install GoReleaser
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

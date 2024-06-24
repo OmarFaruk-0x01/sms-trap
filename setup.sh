@@ -45,27 +45,32 @@ download_and_setup() {
     BASE_URL="https://github.com/OmarFaruk-0x01/sms-trap/releases/download/${LATEST_VERSION}"
     FILE_NAME="sms-trap_${LATEST_VERSION:1}_${OS}_${ARCH}.tar.gz"
     CHECKSUM_FILE="sms-trap_${LATEST_VERSION:1}_checksums.txt"
+    TEMP_DIR=$(mktemp -d)
 
     echo "Downloading $FILE_NAME..."
-    wget "${BASE_URL}/${FILE_NAME}" -O "/tmp/${FILE_NAME}"
+    wget "${BASE_URL}/${FILE_NAME}" -O "${TEMP_DIR}/${FILE_NAME}"
 
     echo "Downloading checksum file..."
-    wget "${BASE_URL}/${CHECKSUM_FILE}" -O "/tmp/${CHECKSUM_FILE}"
+    wget "${BASE_URL}/${CHECKSUM_FILE}" -O "${TEMP_DIR}/${CHECKSUM_FILE}"
 
     echo "Verifying checksum..."
-    CHECKSUM=$(grep "${FILE_NAME}" "/tmp/${CHECKSUM_FILE}" | awk '{ print $1 }')
-    echo "${CHECKSUM}  /tmp/${FILE_NAME}" | sha256sum -c -
+    CHECKSUM=$(grep "${FILE_NAME}" "${TEMP_DIR}/${CHECKSUM_FILE}" | awk '{ print $1 }')
+    echo "${CHECKSUM}  ${TEMP_DIR}/${FILE_NAME}" | sha256sum -c -
 
     if [[ $? -ne 0 ]]; then
         echo "Checksum verification failed!"
+        rm -r "${TEMP_DIR}"
         exit 1
     fi
 
     echo "Extracting $FILE_NAME..."
-    tar -xzf "/tmp/${FILE_NAME}" -C /usr/local/bin
+    tar -xzf "${TEMP_DIR}/${FILE_NAME}" -C "${TEMP_DIR}"
+
+    echo "Moving files to /usr/local/bin..."
+    mv "${TEMP_DIR}/sms-trap" /usr/local/bin/
 
     echo "Cleaning up..."
-    rm "/tmp/${FILE_NAME}" "/tmp/${CHECKSUM_FILE}"
+    rm -r "${TEMP_DIR}"
 
     echo "SMS Trap setup complete!"
 }

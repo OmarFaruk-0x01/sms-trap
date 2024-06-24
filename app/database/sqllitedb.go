@@ -12,7 +12,7 @@ import (
 )
 
 // NewSqliteDB creates and returns a new bun.DB instance for SQLite
-func NewSqliteDB(dbPath string) (db *bun.DB, tempFile string, err error) {
+func NewSqliteDB(dbPath string, env string) (db *bun.DB, tempFile string, err error) {
 	var sqldb *sql.DB
 
 	if dbPath == "" {
@@ -34,10 +34,12 @@ func NewSqliteDB(dbPath string) (db *bun.DB, tempFile string, err error) {
 	db = bun.NewDB(sqldb, sqlitedialect.New())
 
 	// Add query hook for debugging
-	db.AddQueryHook(bundebug.NewQueryHook(
-		bundebug.WithVerbose(true),
-		bundebug.FromEnv("BUNDEBUG"),
-	))
+	if env == "dev" {
+		db.AddQueryHook(bundebug.NewQueryHook(
+			bundebug.WithVerbose(true),
+			bundebug.FromEnv("BUNDEBUG"),
+		))
+	}
 
 	return db, tempFile, nil
 }

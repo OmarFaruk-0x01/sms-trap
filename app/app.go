@@ -26,10 +26,11 @@ func (app *App) StartServer() {
 }
 
 func (app *App) registerMiddlewares() {
+	if app.Env == "dev" {
+		app.Echo.Use(middleware.Logger())
+	}
 
-	app.Echo.Use(middleware.Logger())
 	app.Echo.Use(middleware.Recover())
-
 }
 
 func (app *App) registerRoutes() {

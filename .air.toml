@@ -2,8 +2,8 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  bin = "./tmp/main -db-path=./sms-trap.db"
-  cmd = "make build"
+  bin = ""
+  cmd = "make run"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "node_modules", 'public', 'examples']
   exclude_file = []

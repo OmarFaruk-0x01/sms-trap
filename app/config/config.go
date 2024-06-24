@@ -12,8 +12,9 @@ type AppConfig struct {
 	Db   *bun.DB
 	Hub  *websocket.Hub
 	Port string
+	Env  string
 }
 
-func NewAppConfig(echo *echo.Echo, db *bun.DB, hub *websocket.Hub, port string) *AppConfig {
-	return &AppConfig{echo, db, hub, port}
+func NewAppConfig(echo *echo.Echo, db *bun.DB, hub *websocket.Hub, port string, env string) *AppConfig {
+	return &AppConfig{echo, db, hub, port, env}
 }

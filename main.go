@@ -24,6 +24,7 @@ import (
 var (
 	dbPath string
 	port   string
+	env    string
 )
 
 //go:embed public
@@ -37,7 +38,9 @@ func init() {
 
 func main() {
 
-	db, tempFile, err := database.NewSqliteDB(dbPath)
+	env = os.Getenv("APP_ENV")
+
+	db, tempFile, err := database.NewSqliteDB(dbPath, env)
 
 	if err != nil {
 		panic(err)
@@ -50,6 +53,7 @@ func main() {
 	runMigration(db, "up")
 
 	echo := echo.New()
+
 	echo.Validator = app.NewAppValidator()
 
 	echo.Use(middleware.StaticWithConfig(middleware.StaticConfig{
@@ -59,7 +63,7 @@ func main() {
 
 	hub := websocket.NewHub()
 
-	appConfig := config.NewAppConfig(echo, db, hub, port)
+	appConfig := config.NewAppConfig(echo, db, hub, port, env)
 
 	routers := []routes.Router{
 		routes.NewWebRouter("", appConfig),
@@ -72,14 +76,15 @@ func main() {
 	go hub.Run()
 
 	c := make(chan os.Signal, 1)
+
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
-	go func() {
+	go func(c chan os.Signal) {
 		<-c
-		fmt.Printf("Shutting down...\n")
 		app.Shutdown()
+		fmt.Printf("Shutting down...\n")
 		os.Exit(0)
-	}()
+	}(c)
 
 	app.StartServer()
 }

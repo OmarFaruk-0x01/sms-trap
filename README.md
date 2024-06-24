@@ -14,7 +14,50 @@ SMS Trap is a fake SMS-sending API that provides a dashboard to view all sent SM
 - Code samples for multiple languages
 - Integration guides for Laravel and Django
 
-## Installation
+## Usage
+
+### Installation
+
+```sh
+curl https://raw.githubusercontent.com/OmarFaruk-0x01/sms-trap/master/setup.sh | sh
+```
+
+### CLI Options
+
+SMS Trap accepts the following command-line flags:
+
+- `-db-path`: Path to the SQLite database file
+- `-port`: Port to run the server on (default: 1290)
+
+Example:
+
+```sh
+sms-trap -db-path=./sms-trap.db -port=8080
+```
+
+### API Endpoint
+
+Base URL: `http://localhost:1290/api/v1`
+
+#### Send SMS
+
+`GET` `/trap`
+
+Query Parameters:
+
+- `phones[]`: List of phone numbers
+- `message`: SMS message content
+- `label`: Type of SMS (transactional/promotional)
+
+Example:
+
+```sh
+curl http://localhost:1290/api/v1/trap?phones[]=1234567890&phones[]=0987654321&message=Hello%20World&label=transactional
+```
+
+### Development Configuration
+
+### Installation
 
 To install SMS Trap, follow these steps:
 
@@ -28,8 +71,6 @@ To install SMS Trap, follow these steps:
    go mod tidy
    npm install
    ```
-
-## Usage
 
 ### Running the server
 
@@ -58,45 +99,6 @@ For development with hot-reloading:
 ```sh
 make hot
 ```
-
-This uses the `air` tool for live-reloading during development.
-
-## Usage
-
-### API Endpoint
-
-Base URL: `http://localhost:1290/api/v1`
-
-#### Send SMS
-
-`GET` `/trap`
-
-Query Parameters:
-
-- `phones[]`: List of phone numbers
-- `message`: SMS message content
-- `label`: Type of SMS (transactional/promotional)
-
-Example:
-
-```sh
-curl http://localhost:1290/api/v1/trap?phones[]=1234567890&phones[]=0987654321&message=Hello%20World&label=transactional
-```
-
-### CLI Options
-
-SMS Trap accepts the following command-line flags:
-
-- `-db-path`: Path to the SQLite database file
-- `-port`: Port to run the server on (default: 1290)
-
-Example:
-
-```sh
-./sms-trap -db-path=./sms-trap.db -port=8080
-```
-
-### Development Configuration
 
 The project uses `air` for live-reloading during development. The configuration is in the `.air.toml` file in the project root.
 

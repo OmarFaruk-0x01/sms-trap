@@ -9,6 +9,9 @@ detect_os_arch() {
         x86_64)
             ARCH="amd64"
             ;;
+        arm64)
+            ARCH="arm64"
+            ;;
         i386|i686)
             ARCH="386"
             ;;

@@ -19,7 +19,7 @@ func (app *App) StartServer() {
 
 	app.registerRoutes()
 
-	fmt.Printf("Server is running on port %s\n", app.Port)
+	fmt.Printf("SMS Trap Version %s\n\n", app.Version)
 
 	app.Echo.Logger.Fatal(app.Echo.Start(":" + app.Port))
 

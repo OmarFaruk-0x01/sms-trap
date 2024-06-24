@@ -8,13 +8,10 @@ import (
 )
 
 type AppConfig struct {
-	Echo *echo.Echo
-	Db   *bun.DB
-	Hub  *websocket.Hub
-	Port string
-	Env  string
-}
-
-func NewAppConfig(echo *echo.Echo, db *bun.DB, hub *websocket.Hub, port string, env string) *AppConfig {
-	return &AppConfig{echo, db, hub, port, env}
+	Echo    *echo.Echo
+	Db      *bun.DB
+	Hub     *websocket.Hub
+	Port    string
+	Env     string
+	Version string
 }

@@ -22,9 +22,10 @@ import (
 )
 
 var (
-	dbPath string
-	port   string
-	env    string
+	dbPath  string
+	port    string
+	env     string
+	version string = "v0.0.13"
 )
 
 //go:embed public
@@ -61,9 +62,18 @@ func main() {
 		Filesystem: http.FS(publicAssets),
 	}))
 
+	echo.HideBanner = env != "dev"
+
 	hub := websocket.NewHub()
 
-	appConfig := config.NewAppConfig(echo, db, hub, port, env)
+	appConfig := &config.AppConfig{
+		Echo:    echo,
+		Db:      db,
+		Hub:     hub,
+		Port:    port,
+		Env:     env,
+		Version: version,
+	}
 
 	routers := []routes.Router{
 		routes.NewWebRouter("", appConfig),

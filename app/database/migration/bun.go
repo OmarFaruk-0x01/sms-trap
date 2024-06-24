@@ -3,7 +3,6 @@ package migration
 import (
 	"OmarFaruk-0x01/sms-trap/app/models"
 	"context"
-	"fmt"
 
 	"github.com/uptrace/bun"
 )
@@ -23,7 +22,7 @@ func (m *BunMigration) Up() {
 		panic(err)
 	}
 
-	fmt.Println("Created table: traps")
+	// fmt.Println("Created table: traps")
 
 }
 
@@ -38,7 +37,7 @@ func (m *BunMigration) Down() {
 		panic(err)
 	}
 
-	fmt.Println("Dropped table: traps")
+	// fmt.Println("Dropped table: traps")
 
 }
 

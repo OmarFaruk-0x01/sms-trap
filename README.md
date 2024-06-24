@@ -26,13 +26,19 @@ curl https://raw.githubusercontent.com/OmarFaruk-0x01/sms-trap/master/setup.sh |
 
 SMS Trap accepts the following command-line flags:
 
-- `-db-path`: Path to the SQLite database file
+- `-db-path`: Path to the SQLite database file (default: /tmp - delete after closing the server)
 - `-port`: Port to run the server on (default: 1290)
 
 Example:
 
 ```sh
-sms-trap -db-path=./sms-trap.db -port=8080
+# It will not persist your sms
+sms-trap
+```
+
+```sh
+# To Persist the database, mention the path.
+sms-trap -db-path=./sms-trap.db
 ```
 
 ### API Endpoint

@@ -25,7 +25,7 @@ var (
 	dbPath  string
 	port    string
 	env     string
-	version string = "v0.0.13"
+	version string = "v1.0.0"
 )
 
 //go:embed public

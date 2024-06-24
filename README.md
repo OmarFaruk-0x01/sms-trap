@@ -37,7 +37,7 @@ sms-trap
 ```
 
 ```sh
-# To Persist the database, mention the path.
+# To Persist sms, mention the path.
 sms-trap -db-path=./sms-trap.db
 ```
 

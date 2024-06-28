@@ -1,9 +1,13 @@
-<center style="margin-bottom: 20px;">
-<img src='./public/sms-trap-logo.svg' width="150" />
-<h1 style="margin: 1rem 0; border:none;">SMS Trap</h1>
-<img src="https://img.shields.io/github/v/release/OmarFaruk-0x01/sms-trap">
-<img alt="Gitea Stars" src="https://img.shields.io/github/stars/OmarFaruk-0x01/sms-trap">
-</center>
+<p align="center">
+  <img src='./public/sms-trap-logo.svg' width="150" alt="SMS Trap Logo">
+</p>
+
+<h1 align="center" style="border:none;">SMS Trap</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/OmarFaruk-0x01/sms-trap" alt="GitHub release">
+  <img src="https://img.shields.io/github/stars/OmarFaruk-0x01/sms-trap" alt="GitHub stars">
+</p>
 
 ![SS1](./public/sms-trap-ss-1.png)
 

@@ -67,7 +67,7 @@ download_and_setup() {
     tar -xzf "${TEMP_DIR}/${FILE_NAME}" -C "${TEMP_DIR}"
 
     echo "Moving files to /usr/local/bin..."
-    mv "${TEMP_DIR}/sms-trap" /usr/local/bin/
+    sudo mv "${TEMP_DIR}/sms-trap" /usr/local/bin/
 
     echo "Cleaning up..."
     rm -r "${TEMP_DIR}"

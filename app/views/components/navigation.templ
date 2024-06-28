@@ -34,15 +34,16 @@ var routes = []*NavigationType{
 templ Navigation(props *NavigationProps) {
 	<div class="w-full relative h-full z-10">
 		<div class="px-5 flex py-3 mb-3 items-center justify-center">
-			<img src="/logo-gradient.svg" alt="logo" class="w-[140px] -left-2 relative"/>
+			<img src="/sms-trap-logo.svg" alt="logo" class="w-[50px] -left-2 relative"/>
+			<h1 class="font-bold text-2xl text-white line-clamp-1">SMS Trap</h1>
 		</div>
 		<div class="flex flex-col">
 			for _, route := range routes {
 				<a href={ templ.SafeURL(route.Route) } class={ "w-full flex items-center gap-2 p-3 hover:bg-gray-50/30 transition text-white", templ.KV("bg-gray-50/20", strings.HasPrefix(props.ActiveRoute, route.Route) ) }>
-					<span class="w-5 h-5">
+					<span class="w-5 h-5 flex-shrink-0 ">
 						@route.Icon()
 					</span>
-					<span class="relative text-md -top-[1px]">{ route.Label }</span>
+					<span class="relative text-md -top-[1px] line-clamp-1">{ route.Label }</span>
 				</a>
 			}
 		</div>

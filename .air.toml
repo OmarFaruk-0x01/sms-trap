@@ -2,8 +2,8 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  bin = ""
-  cmd = "make run"
+  bin = "/bin/bash -c 'export APP_ENV=dev & make run'"
+  cmd = "make build"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "node_modules", 'public', 'examples']
   exclude_file = []

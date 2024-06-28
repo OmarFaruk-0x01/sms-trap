@@ -744,6 +744,13 @@ video {
   margin-top: 1.5rem;
 }
 
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
 .block {
   display: block;
 }
@@ -867,10 +874,6 @@ video {
   width: 100px;
 }
 
-.w-\[140px\] {
-  width: 140px;
-}
-
 .w-\[18px\] {
   width: 18px;
 }
@@ -885,6 +888,10 @@ video {
 
 .w-\[500px\] {
   width: 500px;
+}
+
+.w-\[50px\] {
+  width: 50px;
 }
 
 .w-auto {

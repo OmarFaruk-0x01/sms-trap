@@ -1,6 +1,11 @@
 <center style="margin-bottom: 20px;">
-<img src='./public/logo-solid.svg' />
+<img src='./public/sms-trap-logo.svg' width="150" />
+<h1 style="margin: 1rem 0; border:none;">SMS Trap</h1>
+<img src="https://img.shields.io/github/v/release/OmarFaruk-0x01/sms-trap">
+<img alt="Gitea Stars" src="https://img.shields.io/github/stars/OmarFaruk-0x01/sms-trap">
 </center>
+
+![SS1](./public/sms-trap-ss-1.png)
 
 SMS Trap is a fake SMS-sending API that provides a dashboard to view all sent SMS messages. It's designed for testing and development purposes, offering code samples for implementation in various languages and framework-specific guides.
 
@@ -60,6 +65,12 @@ Example:
 ```sh
 curl http://localhost:1290/api/v1/trap?phones[]=1234567890&phones[]=0987654321&message=Hello%20World&label=transactional
 ```
+
+### Framework Guides
+
+- [Laravel](https://github.com/OmarFaruk-0x01/sms-trap/tree/master/examples/laravel)
+- [Django](https://github.com/OmarFaruk-0x01/sms-trap/tree/master/examples/django)
+- Ruby On Rails (coming soon)
 
 ### Development Configuration
 

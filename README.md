@@ -67,7 +67,7 @@ Query Parameters:
 Example:
 
 ```sh
-curl http://localhost:1290/api/v1/trap?phones[]=1234567890&phones[]=0987654321&message=Hello%20World&label=transactional
+curl -X GET "http://localhost:1290/api/v1/trap?phones[]=1234567890&phones[]=0987654321&message=Hello%20World&label=transactional"
 ```
 
 ### Framework Guides
@@ -111,7 +111,7 @@ To build the project:
 make build
 ```
 
-This will generate necessary files, build CSS, and compile the Go binary.
+This will generate the necessary files, build CSS, and compile the Go binary.
 
 ### Hot Reloading
 
@@ -121,7 +121,7 @@ For development with hot-reloading:
 make hot
 ```
 
-The project uses `air` for live-reloading during development. The configuration is in the `.air.toml` file in the project root.
+The project uses `air` for live reloading during development. The configuration is in the project root's `.air.toml` file.
 
 ## Contributing
 

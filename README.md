@@ -28,7 +28,7 @@ SMS Trap is a fake SMS-sending API that provides a dashboard to view all sent SM
 ### Installation
 
 ```sh
-sudo curl https://raw.githubusercontent.com/OmarFaruk-0x01/sms-trap/master/setup.sh | sh
+sudo curl https://raw.githubusercontent.com/OmarFaruk-0x01/sms-trap/master/setup.sh | bash
 ```
 
 ### CLI Options
